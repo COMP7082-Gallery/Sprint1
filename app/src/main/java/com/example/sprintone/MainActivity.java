@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.BufferedOutputStream;
@@ -51,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
             currentPhotoPath = photoPaths[pointer];
             setPic();
         }
+    }
+
+    //Handler for the filter function of the app
+    //Directs to the Filter Activity
+    public void startFilter(View v) {
+        Intent intent = new Intent(this, FilterGalleryActivity.class);
+        startActivity(intent);
     }
 
     //
