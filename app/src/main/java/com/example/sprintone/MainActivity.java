@@ -80,6 +80,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Handler for the filter function of the app
+    //Directs to the Filter Activity
+    public void startFilter(View v) {
+        Intent intent = new Intent(this, FilterGalleryActivity.class);
+        startActivity(intent);
+    }
+
     //
     //Handler for the camera function of the app
     //Delegates to the android camera app
