@@ -11,10 +11,10 @@
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_height="408dp"
+        android:layout_weight="1"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_baseline_image_24"
-        android:layout_weight="1"/>
+        android:src="@drawable/ic_baseline_image_24" />
 
     <TextView
         android:id="@+id/textView1"
@@ -24,13 +24,21 @@
         android:gravity="center"
         android:layout_weight="1"/>
 
+    <EditText
+        android:id="@+id/editCaptionView"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:text="Caption Area"
+        android:layout_weight="2"
         android:gravity="center"
-        android:layout_weight="2"/>
+        android:text="Caption Area" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,6 +85,7 @@
         android:id="@+id/edit_caption_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="editCaption"
         android:text="Edit Caption" />
 
 </LinearLayout>
