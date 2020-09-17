@@ -923,6 +923,7 @@ id dragUp
 id easeIn
 id easeInOut
 id easeOut
+id editCaptionView
 id edit_caption_btn
 id edit_query
 id end

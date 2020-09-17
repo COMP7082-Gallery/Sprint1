@@ -14,7 +14,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -23,24 +25,49 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+//TODO: Link caption to image
+
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private ImageView imageView;
+    //private TextView caption;
     private String currentPhotoPath = null;
     private String[] photoPaths = null;
     private int photoPointer = -1;
+    protected EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imageView = findViewById(R.id.image_view);
+        editText = (EditText) findViewById(R.id.editCaptionView);
+
+        hideEditCaption(editText);
         photoPaths = getPhotoPaths();
         if (photoPaths.length > 0) {
             updateCurrentPhoto(photoPaths.length - 1);
         }
+    }
+
+    /* Initially hides edit text box */
+    public void hideEditCaption(View view){
+        editText.setVisibility(View.GONE);
+    }
+
+    /* Edit caption for existing photo */
+    public void editCaption(View view){
+        //caption = (TextView) findViewById(R.id.textView2);
+        TextView captionText = (TextView) findViewById(R.id.textView2);
+        editText = (EditText) findViewById(R.id.editCaptionView);
+
+        captionText.setText("Hello");
+
+        captionText.setVisibility(View.GONE);
+        editText.setVisibility(View.VISIBLE);
+        editText.setText("Hello");
     }
 
 
