@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -18,12 +20,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.BufferedOutputStream;
+
+import com.example.sprintone.Navigation.GalleryTraversal;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+
 
 //TODO: Link caption to image
 
@@ -33,10 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView imageView;
     //private TextView caption;
-    private String currentPhotoPath = null;
-    private String[] photoPaths = null;
-    private int photoPointer = -1;
+    //private TextView caption;
     protected EditText editText;
+    private GalleryTraversal traversal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +50,10 @@ public class MainActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.editCaptionView);
 
         hideEditCaption(editText);
-        photoPaths = getPhotoPaths();
-        if (photoPaths.length > 0) {
-            updateCurrentPhoto(photoPaths.length - 1);
+        traversal = new GalleryTraversal(getPhotoPathsFromDir());
+        if (traversal.getPhotoPaths().length > 0) {
+            //update to most recent photo
+            updateCurrentPhoto(traversal.getPhotoPaths().length - 1);
         }
     }
 
@@ -72,12 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void updateCurrentPhoto(int pointer) {
-        if (pointer > 0 && pointer < photoPaths.length)
-        {
-            photoPointer = pointer;
-            currentPhotoPath = photoPaths[pointer];
-            setPic();
-        }
+        //moves the pointer the the updated location and sets the picture
+        traversal.traverseGallery(pointer);
+        setPic();
     }
 
     //Handler for the filter function of the app
@@ -130,13 +132,13 @@ public class MainActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
+        //traversal.getCurrentPhotoPath() = image.getAbsolutePath();
         return image;
     }
 
     //
     //creates a high-res image
-    //creates the images based on the currentPhotoPath
+    //creates the images based on the traversal.getCurrentPhotoPath()
     //
     private void setPic() {
         // Get the dimensions of the View
@@ -147,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
 
-        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        BitmapFactory.decodeFile(traversal.getCurrentPhotoPath(), bmOptions);
 
         int photoW = bmOptions.outWidth;
         int photoH = bmOptions.outHeight;
@@ -161,22 +163,22 @@ public class MainActivity extends AppCompatActivity {
         //bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        Bitmap bitmap = BitmapFactory.decodeFile(traversal.getCurrentPhotoPath(), bmOptions);
         imageView.setImageBitmap(bitmap);
     }
 
     //
     //Runs when the android camera app finishes
     //Updates the gallery with the existing photo's, and the image that was just captured
-    //Sets the currentPhotoPath to the image just captured
+    //Sets the traversal.getCurrentPhotoPath() to the image just captured
     //Sets the photoPointer to the end of the gallery
     //
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && currentPhotoPath != null) {
-            photoPaths = getPhotoPaths();
-            updateCurrentPhoto(photoPaths.length - 1);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && traversal.getCurrentPhotoPath() != null) {
+            traversal.setPhotoPaths(getPhotoPathsFromDir());
+            updateCurrentPhoto(traversal.getPhotoPaths().length - 1);
         }
 
     }
@@ -184,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
     //
     //Returns all the the photo file paths as a String array
     //
-    private String [] getPhotoPaths() {
+    private String [] getPhotoPathsFromDir() {
         String dir_path = getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString();
         Log.d("Path", "Whats the path: " + getExternalFilesDir(Environment.DIRECTORY_PICTURES));
 
@@ -201,19 +203,19 @@ public class MainActivity extends AppCompatActivity {
 
     //
     //Allows users to traverse through their gallery of images
-    //The currentPhotoPath is assigned with the current image to view
-    //The photoPointer is updated to the index of the currentPhotoPath
+    //The traversal.getCurrentPhotoPath() is assigned with the current image to view
+    //The photoPointer is updated to the index of the traversal.getCurrentPhotoPath()
     //
     public void traverseGallery(View view) {
-        if (view.getId() == R.id.prev_btn && photoPointer > 0) {
-            updateCurrentPhoto(--photoPointer);
-            //currentPhotoPath = updatePhotoPath(--photoPointer);
-            Log.d("Traversal", "Pointer at: " + photoPointer);
+        if (view.getId() == R.id.prev_btn && traversal.getPhotoPointer() > 0) {
+            updateCurrentPhoto(traversal.getPhotoPointer() - 1);
+            //traversal.getCurrentPhotoPath() = updatePhotoPath(--photoPointer);
+            Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
         }
-        else if (view.getId() == R.id.next_btn && photoPointer < photoPaths.length - 1) {
-            updateCurrentPhoto(++photoPointer);
-            //currentPhotoPath = updatePhotoPath(++photoPointer);
-            Log.d("Traversal", "Pointer at: " + photoPointer);
+        else if (view.getId() == R.id.next_btn && traversal.getPhotoPointer() < traversal.getPhotoPaths().length - 1) {
+            updateCurrentPhoto(traversal.getPhotoPointer() + 1);
+            //traversal.getCurrentPhotoPath() = updatePhotoPath(++photoPointer);
+            Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
         }
         setPic();
     }
