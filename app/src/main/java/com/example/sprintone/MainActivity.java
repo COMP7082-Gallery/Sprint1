@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import com.example.sprintone.Navigation.GalleryTraversal;
 
@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
     //private TextView caption;
     protected EditText editText;
     private GalleryTraversal traversal;
+    private Date currentPhotoDate = null;
+    private Date[] photoDates = null;
+    private int photoPointer;
+    //private LocationManager locationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +80,15 @@ public class MainActivity extends AppCompatActivity {
         editText.setText("Hello");
     }
 
-
+    //
+    // Update current photo
+    // Update date time of the current photo
+    //
     private void updateCurrentPhoto(int pointer) {
         //moves the pointer the the updated location and sets the picture
         traversal.traverseGallery(pointer);
+        photoPointer = pointer;
+        setDate(photoPointer);
         setPic();
     }
 
@@ -135,7 +145,14 @@ public class MainActivity extends AppCompatActivity {
         //traversal.getCurrentPhotoPath() = image.getAbsolutePath();
         return image;
     }
-
+    //
+    // Set the textView1 with the date of image in yyyy-MM-dd hh:mm:ss format.
+    //
+    private void setDate(int pointer) {
+        currentPhotoDate = photoDates[pointer];
+        TextView dateText = (TextView)findViewById(R.id.textView1);
+        dateText.setText(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(currentPhotoDate));
+    }
     //
     //creates a high-res image
     //creates the images based on the traversal.getCurrentPhotoPath()
@@ -193,31 +210,57 @@ public class MainActivity extends AppCompatActivity {
         File directory = new File(dir_path);
         File[] files = directory.listFiles();
         String [] paths = new String[files.length];
-
+        if (files.length > 0) {
+            photoDates = getPhotoDates(files);
+        }else {
+            Toast.makeText(MainActivity.this, "Images not found",
+                    Toast.LENGTH_SHORT).show();
+        }
         for (int i = 0; i < files.length; i++) {
             Log.d("Files", "FileName:" + files[i].getAbsolutePath());
             paths[i] = files[i].getAbsolutePath();
         }
         return paths;
     }
-
+    //
+    //Returns all the the photo's last modified date as a Date array
+    //
+    private Date [] getPhotoDates(File[] files){
+        Date [] dates = new Date[files.length];
+        for (int i = 0; i < files.length; i++) {
+            Log.d("Dates", "Dates:" + files[i].lastModified());
+            dates[i] = new Date(files[i].lastModified());
+        }
+        return dates;
+    }
     //
     //Allows users to traverse through their gallery of images
     //The traversal.getCurrentPhotoPath() is assigned with the current image to view
     //The photoPointer is updated to the index of the traversal.getCurrentPhotoPath()
     //
     public void traverseGallery(View view) {
-        if (view.getId() == R.id.prev_btn && traversal.getPhotoPointer() > 0) {
+        if (view.getId() == R.id.prev_btn) {
+            if (traversal.getPhotoPointer() > 0) {
             updateCurrentPhoto(traversal.getPhotoPointer() - 1);
             //traversal.getCurrentPhotoPath() = updatePhotoPath(--photoPointer);
             Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
+            }
+            else {
+                Toast.makeText(MainActivity.this, "First image",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
-        else if (view.getId() == R.id.next_btn && traversal.getPhotoPointer() < traversal.getPhotoPaths().length - 1) {
-            updateCurrentPhoto(traversal.getPhotoPointer() + 1);
-            //traversal.getCurrentPhotoPath() = updatePhotoPath(++photoPointer);
-            Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
+        else if (view.getId() == R.id.next_btn) {
+            if (traversal.getPhotoPointer() < traversal.getPhotoPaths().length - 1) {
+                updateCurrentPhoto(traversal.getPhotoPointer() + 1);
+                //traversal.getCurrentPhotoPath() = updatePhotoPath(++photoPointer);
+                Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
+            }
+            else {
+                Toast.makeText(MainActivity.this, "Last image",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
-        setPic();
     }
 
 }
