@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -150,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     //
     private void setDate(int pointer) {
         currentPhotoDate = photoDates[pointer];
-        TextView dateText = (TextView)findViewById(R.id.textView1);
+        TextView dateText = (TextView)findViewById(R.id.dateTime);
         dateText.setText(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(currentPhotoDate));
     }
     //
