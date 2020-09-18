@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Criteria;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,7 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.HashMap;
 
 
 //TODO: Link caption to image
@@ -39,22 +42,24 @@ public class MainActivity extends AppCompatActivity {
     //private TextView caption;
     protected EditText editText;
     private GalleryTraversal traversal;
-    private Date currentPhotoDate = null;
     private Date[] photoDates = null;
-    private int photoPointer;
-    //private LocationManager locationManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        HashMap<String,String> filterString = (HashMap<String,String>) intent.getSerializableExtra("Filter_Input");
+        Log.d("Map", "Filter Strings in MainActivity:" + filterString);
+
         imageView = findViewById(R.id.image_view);
         editText = (EditText) findViewById(R.id.editCaptionView);
 
         hideEditCaption(editText);
         traversal = new GalleryTraversal(getPhotoPathsFromDir());
-        if (traversal.getPhotoPaths().length > 0) {
+        String [] paths = traversal.getPhotoPaths();
+        if (paths != null && paths.length > 0) {
             //update to most recent photo
             updateCurrentPhoto(traversal.getPhotoPaths().length - 1);
         }
@@ -85,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
     private void updateCurrentPhoto(int pointer) {
         //moves the pointer the the updated location and sets the picture
         traversal.traverseGallery(pointer);
-        photoPointer = pointer;
-        setDate(photoPointer);
+        //photoPointer = pointer;
+        setDate();
         setPic();
     }
 
@@ -146,10 +151,10 @@ public class MainActivity extends AppCompatActivity {
     //
     // Set the textView1 with the date of image in yyyy-MM-dd hh:mm:ss format.
     //
-    private void setDate(int pointer) {
-        currentPhotoDate = photoDates[pointer];
+    private void setDate() {
+        //Date currentPhotoDate = photoDates[traversal.getPhotoPointer()];
         TextView dateText = (TextView)findViewById(R.id.dateTime);
-        dateText.setText(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(currentPhotoDate));
+        dateText.setText(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(photoDates[traversal.getPhotoPointer()]));
     }
     //
     //creates a high-res image
@@ -208,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         File directory = new File(dir_path);
         File[] files = directory.listFiles();
         String [] paths = new String[files.length];
+
         if (files.length > 0) {
             photoDates = getPhotoDates(files);
         }else {
@@ -226,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
     private Date [] getPhotoDates(File[] files){
         Date [] dates = new Date[files.length];
         for (int i = 0; i < files.length; i++) {
-            Log.d("Dates", "Dates:" + files[i].lastModified());
+            Log.d("Dates", "Dates:" + new SimpleDateFormat("yyyyMMdd").format(files[i].lastModified()));
             dates[i] = new Date(files[i].lastModified());
         }
         return dates;
@@ -239,9 +245,9 @@ public class MainActivity extends AppCompatActivity {
     public void traverseGallery(View view) {
         if (view.getId() == R.id.prev_btn) {
             if (traversal.getPhotoPointer() > 0) {
-            updateCurrentPhoto(traversal.getPhotoPointer() - 1);
-            //traversal.getCurrentPhotoPath() = updatePhotoPath(--photoPointer);
-            Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
+                updateCurrentPhoto(traversal.getPhotoPointer() - 1);
+                //traversal.getCurrentPhotoPath() = updatePhotoPath(--photoPointer);
+                Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
             }
             else {
                 Toast.makeText(MainActivity.this, "First image",
