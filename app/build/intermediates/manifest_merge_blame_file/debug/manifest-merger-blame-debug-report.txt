@@ -49,47 +49,46 @@
 28-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:20:9-54
 29        android:supportsRtl="true"
 29-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:21:9-35
-30        android:testOnly="true"
-31        android:theme="@style/AppTheme" >
-31-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:22:9-40
-32        <provider
-32-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:23:9-31:20
-33            android:name="androidx.core.content.FileProvider"
-33-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:24:13-62
-34            android:authorities="com.example.sprintone.android.fileprovider"
-34-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:25:13-77
-35            android:exported="false"
-35-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:26:13-37
-36            android:grantUriPermissions="true" >
-36-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:27:13-47
-37            <meta-data
-37-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:28:13-30:54
-38                android:name="android.support.FILE_PROVIDER_PATHS"
-38-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:29:17-67
-39                android:resource="@xml/file_paths" />
-39-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:30:17-51
-40        </provider>
-41
-42        <activity android:name="com.example.sprintone.FilterGalleryActivity" />
-42-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:32:9-59
-42-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:32:19-56
-43        <activity
-43-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:33:9-39:20
-44            android:name="com.example.sprintone.MainActivity"
-44-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:33:19-47
-45            android:screenOrientation="portrait" >
-45-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:33:48-84
-46            <intent-filter>
-46-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:34:13-38:29
-47                <action android:name="android.intent.action.MAIN" />
-47-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:35:17-69
-47-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:35:25-66
-48
-49                <category android:name="android.intent.category.LAUNCHER" />
-49-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:37:17-77
-49-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:37:27-74
-50            </intent-filter>
-51        </activity>
-52    </application>
-53
-54</manifest>
+30        android:theme="@style/AppTheme" >
+30-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:22:9-40
+31        <provider
+31-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:23:9-31:20
+32            android:name="androidx.core.content.FileProvider"
+32-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:24:13-62
+33            android:authorities="com.example.sprintone.android.fileprovider"
+33-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:25:13-77
+34            android:exported="false"
+34-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:26:13-37
+35            android:grantUriPermissions="true" >
+35-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:27:13-47
+36            <meta-data
+36-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:28:13-30:54
+37                android:name="android.support.FILE_PROVIDER_PATHS"
+37-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:29:17-67
+38                android:resource="@xml/file_paths" />
+38-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:30:17-51
+39        </provider>
+40
+41        <activity android:name="com.example.sprintone.FilterGalleryActivity" />
+41-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:32:9-59
+41-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:32:19-56
+42        <activity
+42-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:33:9-39:20
+43            android:name="com.example.sprintone.MainActivity"
+43-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:33:19-47
+44            android:screenOrientation="portrait" >
+44-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:33:48-84
+45            <intent-filter>
+45-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:34:13-38:29
+46                <action android:name="android.intent.action.MAIN" />
+46-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:35:17-69
+46-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:35:25-66
+47
+48                <category android:name="android.intent.category.LAUNCHER" />
+48-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:37:17-77
+48-->C:\Users\soukc\Desktop\Btech\SOFTENG_7082\photogallery\Sprint1\app\src\main\AndroidManifest.xml:37:27-74
+49            </intent-filter>
+50        </activity>
+51    </application>
+52
+53</manifest>
