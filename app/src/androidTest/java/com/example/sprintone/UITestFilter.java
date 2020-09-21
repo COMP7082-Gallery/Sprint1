@@ -36,5 +36,6 @@ public class UITestFilter {
         onView(withId(R.id.prev_btn)).perform(click());
         onView(withId(R.id.prev_btn)).perform(click());
         onView(withId(R.id.captionText)).check(matches(withText("caption")));
+        onView(withId(R.id.next_btn)).perform(click());
     }
 }
