@@ -23,6 +23,9 @@
         android:layout_height="wrap_content"
         android:text="Datetime"
         android:textAlignment="center" />
+    cookies View and change cookie preferences
+
+    Privacy Policy | Powered by Company logo for TrustArc
 
     <TextView
         android:id="@+id/coordinate"
