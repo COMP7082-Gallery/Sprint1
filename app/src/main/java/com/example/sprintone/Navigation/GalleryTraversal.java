@@ -4,27 +4,33 @@ import android.util.Log;
 
 import com.example.sprintone.R;
 
+import java.util.ArrayList;
+
 public class GalleryTraversal {
 
     private String currentPhotoPath = null;
-    private String[] photoPaths = null;
+    private ArrayList<String> photoPaths = null;
     private int photoPointer = -1;
 
     //
     //Paths
     //
-    public GalleryTraversal(String[] paths) {
-        if (paths.length > 0)
+    public GalleryTraversal(ArrayList<String> paths) {
+        if (paths != null)
         {
             photoPaths = paths;
-            photoPointer = photoPaths.length - 1;
-            currentPhotoPath = photoPaths[photoPointer];
+            photoPointer = photoPaths.size() - 1;
+            currentPhotoPath = photoPaths.get(photoPointer);
         }
     }
 
 
-    public void setPhotoPaths(String[] photoPaths) {
+    public void setPhotoPaths(ArrayList<String> photoPaths) {
         this.photoPaths = photoPaths;
+    }
+
+    public void setCurrentPhotoPaths(String path) {
+        photoPaths.set(photoPointer, path);
     }
 
 
@@ -36,17 +42,17 @@ public class GalleryTraversal {
         return currentPhotoPath;
     }
 
-    public String[] getPhotoPaths() {
+    public ArrayList<String> getPhotoPaths() {
         return photoPaths;
     }
 
 
     //setter for photoPointer and currentPhotoPath
     public void traverseGallery(int upd_pointer_loc) {
-        if (upd_pointer_loc > -1 && upd_pointer_loc < photoPaths.length)
+        if (upd_pointer_loc > -1 && upd_pointer_loc < photoPaths.size())
         {
             photoPointer = upd_pointer_loc;
-            currentPhotoPath = photoPaths[photoPointer];
+            currentPhotoPath = photoPaths.get(photoPointer);
         }
     }
 }
