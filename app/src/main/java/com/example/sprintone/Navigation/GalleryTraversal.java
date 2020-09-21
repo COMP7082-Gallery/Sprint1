@@ -1,9 +1,5 @@
 package com.example.sprintone.Navigation;
 
-import android.util.Log;
-
-import com.example.sprintone.R;
-
 import java.util.ArrayList;
 
 public class GalleryTraversal {
