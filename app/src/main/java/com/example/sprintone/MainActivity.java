@@ -48,11 +48,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Intent intent = getIntent();
-        HashMap<String,String> filterString = (HashMap<String,String>) intent.getSerializableExtra("Filter_Input");
-        Log.d("Map", "Filter Strings in MainActivity:" + filterString);
-
+        //Intent intent = getIntent();
         imageView = findViewById(R.id.image_view);
         editText = (EditText) findViewById(R.id.editCaptionView);
 
