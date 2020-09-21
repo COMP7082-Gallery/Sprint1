@@ -31,19 +31,35 @@
         android:text="Location"
         android:textAlignment="center" />
 
-    <EditText
-        android:id="@+id/editCaptionView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/captionText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Caption Area"
+        android:text=" "
         android:textAlignment="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/captionArea">
+
+        <EditText
+            android:id="@+id/editCaptionView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="saveCaption"
+            android:text="Save" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
