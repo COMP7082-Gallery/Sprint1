@@ -890,6 +890,7 @@ id bottom
 id bounce
 id buttonPanel
 id camera_btn
+id cancel_filter_btn
 id center
 id center_vertical
 id chain
@@ -927,9 +928,13 @@ id editCaptionView
 id edit_caption_btn
 id edit_query
 id end
+id end_date_text
 id expand_activities_button
 id expanded_menu
+id filter_end_date
 id filter_image_btn
+id filter_keyword
+id filter_start_date
 id flip
 id forever
 id glide_custom_view_target_tag
@@ -953,6 +958,7 @@ id invisible
 id italic
 id jumpToEnd
 id jumpToStart
+id keyword_text
 id layout
 id left
 id line1
@@ -1002,6 +1008,7 @@ id search_bar
 id search_button
 id search_close_btn
 id search_edit_frame
+id search_filter_btn
 id search_go_btn
 id search_mag_icon
 id search_plate
@@ -1026,6 +1033,7 @@ id standard
 id start
 id startHorizontal
 id startVertical
+id start_date_text
 id staticLayout
 id staticPostLayout
 id stop
@@ -1104,6 +1112,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_filter
 layout activity_main
 layout custom_dialog
 layout notification_action

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <!--ImageView on which image will be set-->
 
@@ -10,39 +11,60 @@
 
     <ImageView
         android:id="@+id/image_view"
-        android:layout_width="400dp"
-        android:layout_height="408dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_baseline_image_24" />
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="400dp"
+        android:id="@+id/dateTime"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Datetime"
-        android:gravity="center"
-        android:layout_weight="1"/>
-
-    <EditText
-        android:id="@+id/editCaptionView"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_weight="1"
-        android:ems="10"
-        android:inputType="textPersonName" />
+        android:textAlignment="center" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="400dp"
+        android:id="@+id/coordinate"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:text="Caption Area" />
+        android:text="Location"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/captionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" "
+        android:textAlignment="center" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/captionArea">
+
+        <EditText
+            android:id="@+id/editCaptionView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="saveCaption"
+            android:text="Save" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:orientation="horizontal"
         android:weightSum="3">
 
@@ -79,8 +101,8 @@
         style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Filter Gallery"
-        android:onClick="startFilter" />
+        android:onClick="startFilter"
+        android:text="Filter Gallery" />
 
     <Button
         android:id="@+id/edit_caption_btn"
