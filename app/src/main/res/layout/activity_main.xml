@@ -21,7 +21,7 @@
         android:id="@+id/dateTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Datetime"
+        android:text="TimeStamp"
         android:textAlignment="center" />
 
     <TextView
@@ -35,7 +35,7 @@
         android:id="@+id/captionText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=" "
+        android:text="Caption"
         android:textAlignment="center" />
 
     <LinearLayout

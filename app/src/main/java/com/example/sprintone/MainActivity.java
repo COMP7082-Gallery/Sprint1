@@ -272,11 +272,12 @@ public class MainActivity extends AppCompatActivity {
                     return (lastModifiedO2 > lastModifiedO1) ? -1 : ((lastModifiedO1 < lastModifiedO2) ? 1 : 0);
                 }
             });
-            for (File file : files) {
-                if (((startTimestamp == null && endTimestamp == null) || (file.lastModified() >= startTimestamp.getTime() && file.lastModified() <= endTimestamp.getTime())) && (keywords == "" || file.getPath().contains(keywords))) {
-                    Log.d("Files", "FileName:" + file.getAbsolutePath() + " modified on " + file.lastModified());
-                    paths.add(file.getAbsolutePath());
-                }
+        }
+
+        for (File file : files) {
+            if (((startTimestamp == null && endTimestamp == null) || (file.lastModified() >= startTimestamp.getTime() && file.lastModified() <= endTimestamp.getTime())) && (keywords == "" || file.getPath().contains(keywords))) {
+                Log.d("Files", "FileName:" + file.getAbsolutePath() + " modified on " + file.lastModified());
+                paths.add(file.getAbsolutePath());
             }
         }
 
