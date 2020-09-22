@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             File newName = new File(attr[0] + "_" + editCaption.getText().toString() + "_" + attr[2] + "_" + attr[3] + "_" + attr[4]);
             Log.d("Files", "NewFileName:" + newName.getAbsolutePath());
             File oldName = new File(traversal.getCurrentPhotoPath());
-            Log.d("Files", "OldFileName:" + oldName.getAbsolutePath());
+            Log.d("Files", "OldFileName:" + traversal.getCurrentPhotoPath());
             oldName.renameTo(newName);
             traversal.setCurrentPhotoPaths(newName.getAbsolutePath());
         }
@@ -225,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String keywords = (String) data.getStringExtra("KEYWORDS");
                 traversal.setPhotoPaths(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords));
-                Log.d("Photo Path", "Photo Path:" + traversal.getPhotoPaths());
+                //Log.d("Photo Path", "Photo Path:" + traversal.getPhotoPaths());
                 if (traversal.getPhotoPaths().size() == 0) {
                     Log.d("Set null", "No Picture Found");
                     setPic(null);
@@ -247,7 +250,6 @@ public class MainActivity extends AppCompatActivity {
                 setPic(null);
             }
         }
-
     }
 
     //
@@ -260,19 +262,25 @@ public class MainActivity extends AppCompatActivity {
         File directory = new File(dir_path);
         File[] files = directory.listFiles();
         ArrayList<String> paths = new ArrayList<>();
-        // Log.d("Files", "FileLength:" + files);
-        for (File file : files) {
-            if (((startTimestamp == null && endTimestamp == null) || (file.lastModified() >= startTimestamp.getTime() && file.lastModified() <= endTimestamp.getTime())) && (keywords == "" || file.getPath().contains(keywords))) {
-                Log.d("Files", "FileName:" + file.getAbsolutePath());
-                paths.add(file.getAbsolutePath());
+        //Log.d("Files", "FileLength:" + files);
+        if (files != null && files.length > 1) {
+            Arrays.sort(files, new Comparator<File>() {
+                public int compare(File o1, File o2) {
+                    long lastModifiedO1 = o1.lastModified();
+                    long lastModifiedO2 = o2.lastModified();
+
+                    return (lastModifiedO2 > lastModifiedO1) ? -1 : ((lastModifiedO1 < lastModifiedO2) ? 1 : 0);
+                }
+            });
+            for (File file : files) {
+                if (((startTimestamp == null && endTimestamp == null) || (file.lastModified() >= startTimestamp.getTime() && file.lastModified() <= endTimestamp.getTime())) && (keywords == "" || file.getPath().contains(keywords))) {
+                    Log.d("Files", "FileName:" + file.getAbsolutePath() + " modified on " + file.lastModified());
+                    paths.add(file.getAbsolutePath());
+                }
             }
         }
+
         Log.d("Paths", "PathLength:" + paths.size());
-        //}else {
-        //    Toast.makeText(MainActivity.this, "Images not found",
-        //            Toast.LENGTH_SHORT).show();
-        //    paths = null;
-        //}
         return paths;
     }
 
@@ -309,5 +317,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 }
