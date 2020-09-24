@@ -21,11 +21,8 @@
         android:id="@+id/dateTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Datetime"
+        android:text="TimeStamp"
         android:textAlignment="center" />
-    cookies View and change cookie preferences
-
-    Privacy Policy | Powered by Company logo for TrustArc
 
     <TextView
         android:id="@+id/coordinate"
@@ -38,7 +35,7 @@
         android:id="@+id/captionText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=" "
+        android:text="Caption"
         android:textAlignment="center" />
 
     <LinearLayout
