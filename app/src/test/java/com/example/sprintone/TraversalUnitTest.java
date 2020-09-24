@@ -3,11 +3,15 @@ package com.example.sprintone;
 import com.example.sprintone.Navigation.GalleryTraversal;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
 
 public class TraversalUnitTest {
 
-    private String[] paths = new String[] {"One", "Two", "Three", "Four", "Five"};
+    private ArrayList<String> paths = new ArrayList<>(Arrays.asList("One", "Two", "Three", "Four", "Five"));
 
     @Test
     public void addition_isCorrect() {
@@ -17,7 +21,7 @@ public class TraversalUnitTest {
     @Test
     public void prev_button_at_end() {
         GalleryTraversal gt = new GalleryTraversal(paths);
-        int end = paths.length - 1;
+        int end = paths.size() - 1;
         gt.traverseGallery(gt.getPhotoPointer() - 1);
         assertEquals(end - 1, gt.getPhotoPointer());
     }
@@ -35,7 +39,7 @@ public class TraversalUnitTest {
     @Test
     public void next_button_at_end() {
         GalleryTraversal gt = new GalleryTraversal(paths);
-        int end = paths.length - 1;
+        int end = paths.size() - 1;
         gt.traverseGallery(gt.getPhotoPointer() + 1);
         assertEquals(end, gt.getPhotoPointer());
     }
@@ -55,9 +59,9 @@ public class TraversalUnitTest {
     @Test
     public void prev_button_at_end_path() {
         GalleryTraversal gt = new GalleryTraversal(paths);
-        int end = paths.length - 1;
+        int end = paths.size() - 1;
         gt.traverseGallery(gt.getPhotoPointer() - 1);
-        assertEquals(paths[end - 1], gt.getCurrentPhotoPath());
+        assertEquals(paths.get(end - 1), gt.getCurrentPhotoPath());
     }
 
     @Test
@@ -67,15 +71,15 @@ public class TraversalUnitTest {
         //set pointer to start
         gt.traverseGallery(start);
         gt.traverseGallery(gt.getPhotoPointer() - 1);
-        assertEquals(paths[start], gt.getCurrentPhotoPath());
+        assertEquals(paths.get(start), gt.getCurrentPhotoPath());
     }
 
     @Test
     public void next_button_at_end_path() {
         GalleryTraversal gt = new GalleryTraversal(paths);
-        int end = paths.length - 1;
+        int end = paths.size() - 1;
         gt.traverseGallery(gt.getPhotoPointer() + 1);
-        assertEquals(paths[end], gt.getCurrentPhotoPath());
+        assertEquals(paths.get(end), gt.getCurrentPhotoPath());
     }
 
     @Test
@@ -85,6 +89,6 @@ public class TraversalUnitTest {
         //set pointer to start
         gt.traverseGallery(start);
         gt.traverseGallery(gt.getPhotoPointer() + 1);
-        assertEquals(paths[start + 1], gt.getCurrentPhotoPath());
+        assertEquals(paths.get(start + 1), gt.getCurrentPhotoPath());
     }
 }

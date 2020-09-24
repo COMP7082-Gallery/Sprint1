@@ -1,12 +1,16 @@
 package com.example.sprintone.Navigation;
 
+import android.util.Log;
+
+import com.example.sprintone.R;
+
 import java.util.ArrayList;
 
 public class GalleryTraversal {
 
     private String currentPhotoPath = null;
     private ArrayList<String> photoPaths = null;
-    private int photoPointer = -1;
+    private int photoPointer = 0;
 
     //
     //Paths
