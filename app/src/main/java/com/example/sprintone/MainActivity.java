@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sprintone.Gallery.GallerySingleton;
 import com.example.sprintone.Navigation.GalleryTraversal;
 
 import java.io.File;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout captionArea;
     private GalleryTraversal traversal;
 
+    private GallerySingleton gallery = GallerySingleton.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +58,15 @@ public class MainActivity extends AppCompatActivity {
         captionText = (TextView) findViewById(R.id.captionText);
 
         hideEditCaption(captionArea);
-        traversal = new GalleryTraversal(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), ""));
-        ArrayList<String> paths = traversal.getPhotoPaths();
+        ArrayList<String> paths = getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "");
+        traversal = new GalleryTraversal(paths);
+        gallery.setGallery(paths, paths.size() - 1);
+        //ArrayList<String> paths = traversal.getPhotoPaths();
         if (paths != null && paths.size() > 0) {
             //update to most recent photo
-            updateCurrentPhoto(traversal.getPhotoPaths().size() - 1);
+            //updateCurrentPhoto(traversal.getPhotoPaths().size() - 1);
+            updateCurrentPhoto(gallery.getGalleryPointer());
+            //setPic(gallery.getPhotoPath());
         }
     }
 
@@ -98,9 +105,10 @@ public class MainActivity extends AppCompatActivity {
     //
     private void updateCurrentPhoto(int pointer) {
         //moves the pointer the the updated location and sets the picture
-        traversal.traverseGallery(pointer);
+        //traversal.traverseGallery(pointer);
+        gallery.traverseGallery(pointer);
         //photoPointer = pointer;
-        setPic(traversal.getCurrentPhotoPath());
+        setPic(gallery.getPhotoPath());
     }
 
     //Handler for the filter function of the app
@@ -220,20 +228,23 @@ public class MainActivity extends AppCompatActivity {
                     endTimestamp = null;
                 }
                 String keywords = (String) data.getStringExtra("KEYWORDS");
-                traversal.setPhotoPaths(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords));
+                //traversal.setPhotoPaths(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords));
+                gallery.setGallery(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords), gallery.getGalleryPointer());
                 Log.d("Photo Path", "Photo Path:" + traversal.getPhotoPaths());
                 if (traversal.getPhotoPaths().size() == 0) {
                     Log.d("Set null", "No Picture Found");
                     setPic(null);
                 } else {
-                    updateCurrentPhoto(traversal.getPhotoPaths().size() - 1);
+                    //updateCurrentPhoto(traversal.getPhotoPaths().size() - 1);
+                    updateCurrentPhoto(gallery.getPhotoPaths().size() - 1);
                     Log.d("Set pic", "Picture Found");
                 }
             }
         }
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && traversal.getCurrentPhotoPath() != null) {
-            traversal.setPhotoPaths(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), ""));
-            updateCurrentPhoto(traversal.getPhotoPaths().size() - 1);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            //traversal.setPhotoPaths(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), ""));
+            gallery.setGallery(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), ""), gallery.getGalleryPointer());
+            updateCurrentPhoto(gallery.getPhotoPaths().size() - 1);
         }
 
     }
@@ -272,9 +283,9 @@ public class MainActivity extends AppCompatActivity {
         if (view.getId() == R.id.prev_btn) {
             hideEditCaption(captionArea);
             captionText.setVisibility(View.VISIBLE);
-            if (traversal.getPhotoPointer() > 0) {
-                updateCurrentPhoto(traversal.getPhotoPointer() - 1);
-                //traversal.getCurrentPhotoPath() = updatePhotoPath(--photoPointer);
+            if (gallery.getGalleryPointer() > 0) {
+                //updateCurrentPhoto(traversal.getPhotoPointer() - 1);
+                updateCurrentPhoto(gallery.getGalleryPointer() - 1);
                 Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
             }
             else {
@@ -285,9 +296,9 @@ public class MainActivity extends AppCompatActivity {
         else if (view.getId() == R.id.next_btn) {
             hideEditCaption(captionArea);
             captionText.setVisibility(View.VISIBLE);
-            if (traversal.getPhotoPointer() < traversal.getPhotoPaths().size() - 1) {
-                updateCurrentPhoto(traversal.getPhotoPointer() + 1);
-                //traversal.getCurrentPhotoPath() = updatePhotoPath(++photoPointer);
+            if (gallery.getGalleryPointer() < gallery.getPhotoPaths().size() - 1) {
+                //updateCurrentPhoto(traversal.getPhotoPointer() + 1);
+                updateCurrentPhoto(gallery.getGalleryPointer() + 1);
                 Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
             }
             else {
