@@ -308,4 +308,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //deletes an image
+    public void deletePhoto(View view) {
+        Log.d("Delete", "In Delete");
+
+        try {
+            File file = new File(gallery.getPhotoPath());
+            boolean deleted = file.delete();
+            if (deleted) {
+                gallery.removeFromGallery();
+                updateCurrentPhoto(gallery.getGalleryPointer());
+            }
+            Log.d("Delete?", "Deleted: " + deleted);
+        } catch (IndexOutOfBoundsException e) {
+            Log.d("Delete out of bounds", "Tried to remove out of bounds");
+        }
+    }
+
 }
