@@ -24,7 +24,6 @@ public class GalleryTraversal {
         }
     }
 
-
     public void setPhotoPaths(ArrayList<String> photoPaths) {
         this.photoPaths = photoPaths;
     }
@@ -32,7 +31,6 @@ public class GalleryTraversal {
     public void setCurrentPhotoPaths(String path) {
         photoPaths.set(photoPointer, path);
     }
-
 
     public int getPhotoPointer() {
         return photoPointer;
@@ -45,7 +43,6 @@ public class GalleryTraversal {
     public ArrayList<String> getPhotoPaths() {
         return photoPaths;
     }
-
 
     //setter for photoPointer and currentPhotoPath
     public void traverseGallery(int upd_pointer_loc) {
