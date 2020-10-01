@@ -39,6 +39,13 @@ public class GallerySingleton {
         return photoPaths;
     }
 
+    //
+    //Set current photo path to received path
+    //
+    public void setPhotoPath(String path) {
+        this.photoPaths.set(galleryPointer, path);
+    }
+
     //Returns the current photo path as a String
     //Throws an index out of bounds exception
     public String getPhotoPath() throws IndexOutOfBoundsException {

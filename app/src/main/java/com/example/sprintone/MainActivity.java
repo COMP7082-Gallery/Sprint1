@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
     static final int FILTER_ACTIVITY_REQUEST_CODE = 2;
     public static final int LOCATION_CODE = 301;
 
-    private LocationManager locationManager;
-    private String locationProvider = null;
     private ImageView imageView;
     private TextView timeStamp;
     private TextView coordinates;
@@ -72,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
         hideEditCaption(captionArea);
 
-
         ArrayList<String> files = getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "");
         if (files.size() > 0) {
             gallery.setGallery(files, files.size() - 1);
@@ -94,10 +91,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ArrayList<String> getLocation() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         List<String> providers = locationManager.getProviders(true);
         ArrayList<String> coordinates = new ArrayList<>();
 
+        String locationProvider;
         if (providers.contains(LocationManager.GPS_PROVIDER)) {
             locationProvider = LocationManager.GPS_PROVIDER;
         } else {
@@ -158,15 +156,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void saveCaption(View view){
         captionText.setText(editCaption.getText().toString());
-        String[] attr = traversal.getCurrentPhotoPath().split("_");
-
-        if (attr.length >= 3 && editCaption.getText().toString() != "") {
-            File newName = new File(attr[0] + "_" + editCaption.getText().toString() + "_" + attr[2] + "_" + attr[3] + "_" + attr[4]);
+        String[] attr = gallery.getPhotoPath().split("_");
+        Log.d("Files", "CurrentFileName:" + gallery.getPhotoPath());
+        if (attr.length == 7 && editCaption.getText().toString() != "") {
+            File newName = new File(attr[0] + "_" + editCaption.getText().toString() + "_" + attr[2] + "_" + attr[3] + "_" + attr[4] + "_" + attr[5] + "_" + attr[6]);
             Log.d("Files", "NewFileName:" + newName.getAbsolutePath());
-            File oldName = new File(traversal.getCurrentPhotoPath());
-            Log.d("Files", "OldFileName:" + traversal.getCurrentPhotoPath());
+            File oldName = new File(gallery.getPhotoPath());
+            Log.d("Files", "OldFileName:" + gallery.getPhotoPath());
             oldName.renameTo(newName);
-            traversal.setCurrentPhotoPaths(newName.getAbsolutePath());
+            gallery.setPhotoPath(newName.getAbsolutePath());
         }
         hideEditCaption(captionArea);
         captionText.setVisibility(View.VISIBLE);
@@ -231,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("d", "createImageFile: " + storageDir + " + " + imageFileName);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpeg",  /* suffix */
+                ".jpg",  /* suffix */
                 storageDir      /* directory */
         );
         // Save a file: path for use with ACTION_VIEW intents
@@ -272,8 +270,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
             imageView.setImageBitmap(bitmap);
+            Log.d("setPic", path);
             String[] attr = path.split("_");
-
             SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
             String dateTime = attr[2] + attr[3];
             Date date = null;

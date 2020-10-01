@@ -81,13 +81,13 @@ public class FilterGalleryActivity extends AppCompatActivity {
 
     public void onFilter(final View v) {
         Intent i = new Intent();
-        EditText from = (EditText) findViewById(R.id.filter_start_date);
-        EditText to = (EditText) findViewById(R.id.filter_end_date);
-        EditText tlLat = (EditText) findViewById(R.id.tlLat);
-        EditText tlLon = (EditText) findViewById(R.id.tlLon);
-        EditText brLat = (EditText) findViewById(R.id.brLat);
-        EditText brLon = (EditText) findViewById(R.id.brLon);
-        EditText keywords = (EditText) findViewById(R.id.filter_keyword);
+        EditText from = findViewById(R.id.filter_start_date);
+        EditText to = findViewById(R.id.filter_end_date);
+        EditText tlLat = findViewById(R.id.tlLat);
+        EditText tlLon = findViewById(R.id.tlLon);
+        EditText brLat = findViewById(R.id.brLat);
+        EditText brLon = findViewById(R.id.brLon);
+        EditText keywords = findViewById(R.id.filter_keyword);
 
         i.putExtra("STARTTIMESTAMP", from.getText() != null ? from.getText().toString() : "");
         i.putExtra("ENDTIMESTAMP", to.getText() != null ? to.getText().toString() : "");

@@ -24,13 +24,13 @@ public class GalleryTraversal {
         }
     }
 
-    public void setPhotoPaths(ArrayList<String> photoPaths) {
-        this.photoPaths = photoPaths;
-    }
+    //public void setPhotoPaths(ArrayList<String> photoPaths) {
+    //    this.photoPaths = photoPaths;
+    //}
 
-    public void setCurrentPhotoPaths(String path) {
-        photoPaths.set(photoPointer, path);
-    }
+    //public void setCurrentPhotoPaths(String path) {
+    //    photoPaths.set(photoPointer, path);
+    //}
 
     public int getPhotoPointer() {
         return photoPointer;
