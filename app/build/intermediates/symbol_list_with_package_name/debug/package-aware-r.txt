@@ -809,7 +809,10 @@ drawable tooltip_frame_dark
 drawable tooltip_frame_light
 id ALT
 id CTRL
+id Coordinate
 id FUNCTION
+id Latitude
+id Longitude
 id META
 id NO_DEBUG
 id SHIFT
@@ -1061,9 +1064,6 @@ id text
 id text2
 id textSpacerNoButtons
 id textSpacerNoTitle
-id textView4
-id textView5
-id textView6
 id time
 id title
 id titleDividerNoCustom

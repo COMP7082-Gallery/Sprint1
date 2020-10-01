@@ -1,13 +1,19 @@
 package com.example.sprintone;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,21 +32,26 @@ import com.example.sprintone.Navigation.GalleryTraversal;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
-
-
-//TODO: Link caption to image
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int FILTER_ACTIVITY_REQUEST_CODE = 2;
+    public static final int LOCATION_CODE = 301;
 
+    private LocationManager locationManager;
+    private String locationProvider = null;
     private ImageView imageView;
     private TextView timeStamp;
-    protected EditText editCaption;
+    private TextView coordinates;
+    private EditText editCaption;
     private TextView captionText;
     private LinearLayout captionArea;
     private GalleryTraversal traversal;
@@ -52,23 +63,85 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imageView = (ImageView) findViewById(R.id.image_view);
-        timeStamp = (TextView) findViewById(R.id.dateTime);
-        captionArea = (LinearLayout) findViewById(R.id.captionArea);
-        captionText = (TextView) findViewById(R.id.captionText);
+        imageView = findViewById(R.id.image_view);
+        timeStamp = findViewById(R.id.dateTime);
+        captionArea = findViewById(R.id.captionArea);
+        captionText = findViewById(R.id.captionText);
+        editCaption = findViewById(R.id.editCaptionView);
+        coordinates = findViewById(R.id.coordinate);
 
         hideEditCaption(captionArea);
-        ArrayList<String> paths = getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "");
-        traversal = new GalleryTraversal(paths);
-        gallery.setGallery(paths, paths.size() - 1);
-        //ArrayList<String> paths = traversal.getPhotoPaths();
-        if (paths != null && paths.size() > 0) {
-            //update to most recent photo
-            //updateCurrentPhoto(traversal.getPhotoPaths().size() - 1);
+
+
+        ArrayList<String> files = getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "");
+        if (files.size() > 0) {
+            gallery.setGallery(files, files.size() - 1);
+            traversal = new GalleryTraversal(files);
             updateCurrentPhoto(gallery.getGalleryPointer());
-            //setPic(gallery.getPhotoPath());
+        } else {
+            setPic(null);
+        }
+        askForPermission();
+    }
+
+    private void askForPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_CODE);
+            Log.d("Ask permission", "true");
         }
     }
+
+    private ArrayList<String> getLocation() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        List<String> providers = locationManager.getProviders(true);
+        ArrayList<String> coordinates = new ArrayList<>();
+
+        if (providers.contains(LocationManager.GPS_PROVIDER)) {
+            locationProvider = LocationManager.GPS_PROVIDER;
+        } else {
+            locationProvider = LocationManager.NETWORK_PROVIDER;
+        }
+
+        if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                || (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_CODE);
+            Log.d("Ask permission", "true");
+        } else {
+            locationManager.requestLocationUpdates(locationProvider, 1000, 0, locationListener);
+            Location location = locationManager.getLastKnownLocation(locationProvider);
+            if (location != null) {
+                coordinates.add(String.valueOf(location.getLatitude()));
+                coordinates.add(String.valueOf(location.getLongitude()));
+                Log.d("Coordinates: ", location.getLongitude() + " " + location.getLatitude() + "");
+            }
+            else{
+                coordinates = new ArrayList<>(Arrays.asList("0.0", "0.0"));
+            }
+        }
+        locationManager.removeUpdates(locationListener);
+        return coordinates;
+    }
+
+    public LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onProviderDisabled(String provider) {}
+
+        @Override
+        public void onLocationChanged(Location location) {
+            if (location != null) {
+                Log.d("Coordinates: listen", location.getLongitude() + " " + location.getLatitude() + "");
+            }
+        }
+    };
 
     /* Initially hides edit text box */
     public void hideEditCaption(View view){
@@ -77,12 +150,13 @@ public class MainActivity extends AppCompatActivity {
 
     /* Edit caption for existing photo */
     public void editCaption(View view){
-        //captionText = (TextView) findViewById(R.id.textView2);
+        //Log.d("String", "String" + captionText.getText().toString());
+        editCaption.setText(captionText.getText().toString());
         captionText.setVisibility(View.GONE);
         captionArea.setVisibility(View.VISIBLE);
     }
+
     public void saveCaption(View view){
-        editCaption = (EditText) findViewById(R.id.editCaptionView);
         captionText.setText(editCaption.getText().toString());
         String[] attr = traversal.getCurrentPhotoPath().split("_");
 
@@ -90,11 +164,10 @@ public class MainActivity extends AppCompatActivity {
             File newName = new File(attr[0] + "_" + editCaption.getText().toString() + "_" + attr[2] + "_" + attr[3] + "_" + attr[4]);
             Log.d("Files", "NewFileName:" + newName.getAbsolutePath());
             File oldName = new File(traversal.getCurrentPhotoPath());
-            Log.d("Files", "OldFileName:" + oldName.getAbsolutePath());
+            Log.d("Files", "OldFileName:" + traversal.getCurrentPhotoPath());
             oldName.renameTo(newName);
             traversal.setCurrentPhotoPaths(newName.getAbsolutePath());
         }
-
         hideEditCaption(captionArea);
         captionText.setVisibility(View.VISIBLE);
     }
@@ -138,6 +211,8 @@ public class MainActivity extends AppCompatActivity {
                 Uri imageUri = FileProvider.getUriForFile(this, "com.example.sprintone.android.fileprovider", imageFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                Log.e("imageFile", imageFile.getAbsolutePath());
+                //setExif(imageUri);
             }
         }
     }
@@ -146,21 +221,19 @@ public class MainActivity extends AppCompatActivity {
     //Creates a temporary file for the new image
     //
     private File createImageFile() throws IOException {
-        // Create an image file name
+        ArrayList<String> coordinate = getLocation();
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "image_caption_" + timeStamp + "_";
+        // Create an image file name
+        String imageFileName = "image_caption_" + timeStamp + "_" + coordinate.get(0) + "_" + coordinate.get(1) + "_";
 
         //file directory must match file_path.xml
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
         Log.d("d", "createImageFile: " + storageDir + " + " + imageFileName);
-
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
+                ".jpeg",  /* suffix */
                 storageDir      /* directory */
         );
-
         // Save a file: path for use with ACTION_VIEW intents
         //traversal.getCurrentPhotoPath() = image.getAbsolutePath();
         return image;
@@ -194,13 +267,37 @@ public class MainActivity extends AppCompatActivity {
         if (path == null || path == "") {
             imageView.setImageResource(R.mipmap.ic_launcher);
             timeStamp.setText("");
+            coordinates.setText("");
             captionText.setText("No Picture Found");
         } else {
             Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
             imageView.setImageBitmap(bitmap);
             String[] attr = path.split("_");
-            timeStamp.setText(attr[2]+" "+attr[3]);
-            captionText.setText(attr[1]);
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+            String dateTime = attr[2] + attr[3];
+            Date date = null;
+            try {
+                date = format.parse(dateTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat newFormat = new SimpleDateFormat("MMM d, yyyy h:mm a");
+            String formatDateTime = newFormat.format(date);
+
+            //------------------------------------------------------------------
+            // This section can be removed once we implement our delete function
+            //------------------------------------------------------------------
+            if (attr.length < 6) {
+                timeStamp.setText(formatDateTime);
+                coordinates.setText("Location");
+                captionText.setText(attr[1]);
+            } else {
+            //------------------------------------------------------------------
+                timeStamp.setText(formatDateTime);
+                coordinates.setText(attr[4] + ",  " + attr[5]);
+                captionText.setText(attr[1]);
+            }
         }
     }
 
@@ -216,11 +313,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == FILTER_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                DateFormat format = new SimpleDateFormat("yyyy‐MM‐dd HH:mm:ss");
+                DateFormat format = new SimpleDateFormat("MMM d, yyyyHHmmss");
                 Date startTimestamp , endTimestamp;
                 try {
-                    String from = (String) data.getStringExtra("STARTTIMESTAMP");
-                    String to = (String) data.getStringExtra("ENDTIMESTAMP");
+                    String from = data.getStringExtra("STARTTIMESTAMP") + "000000";
+                    String to = data.getStringExtra("ENDTIMESTAMP") + "235959";
                     startTimestamp = format.parse(from);
                     endTimestamp = format.parse(to);
                 } catch (Exception ex) {
@@ -242,11 +339,20 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            //traversal.setPhotoPaths(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), ""));
-            gallery.setGallery(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), ""), gallery.getGalleryPointer());
-            updateCurrentPhoto(gallery.getPhotoPaths().size() - 1);
-        }
 
+            //traversal.setPhotoPaths(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), ""));
+
+
+            Log.d("Intent value: ", data.toString());
+            ArrayList<String> files = getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "");
+            if (files.size() > 0) {
+                gallery.setGallery(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), ""), gallery.getGalleryPointer());
+                updateCurrentPhoto(gallery.getPhotoPaths().size() - 1);
+            }
+            else{
+                setPic(null);
+            }
+        }
     }
 
     //
@@ -258,19 +364,27 @@ public class MainActivity extends AppCompatActivity {
 
         File directory = new File(dir_path);
         File[] files = directory.listFiles();
-        ArrayList<String> paths = new ArrayList<String>();
+        ArrayList<String> paths = new ArrayList<>();
+        //Log.d("Files", "FileLength:" + files);
+        if (files != null && files.length > 1) {
+            Arrays.sort(files, new Comparator<File>() {
+                public int compare(File o1, File o2) {
+                    long lastModifiedO1 = o1.lastModified();
+                    long lastModifiedO2 = o2.lastModified();
 
-        if (files != null) {
-            for (File file : files) {
-                if (((startTimestamp == null && endTimestamp == null) || (file.lastModified() >= startTimestamp.getTime() && file.lastModified() <= endTimestamp.getTime())) && (keywords == "" || file.getPath().contains(keywords))) {
-                    Log.d("Files", "FileName:" + file.getAbsolutePath());
-                    paths.add(file.getAbsolutePath());
+                    return lastModifiedO2 > lastModifiedO1 ? -1 : 0;
                 }
-            }
-        }else {
-            Toast.makeText(MainActivity.this, "Images not found",
-                    Toast.LENGTH_SHORT).show();
+            });
         }
+        for (File file : files) {
+            if (((startTimestamp == null && endTimestamp == null) || (file.lastModified() >= startTimestamp.getTime() && file.lastModified() <= endTimestamp.getTime()))
+                    && (keywords == "" || file.getPath().contains(keywords))) {
+                Log.d("Files", "FileName:" + file.getAbsolutePath() + " modified on " + file.lastModified());
+                paths.add(file.getAbsolutePath());
+            }
+        }
+
+        Log.d("Paths", "PathLength:" + paths.size());
         return paths;
     }
 
@@ -324,5 +438,4 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Delete out of bounds", "Tried to remove out of bounds");
         }
     }
-
 }
