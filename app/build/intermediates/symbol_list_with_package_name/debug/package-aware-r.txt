@@ -894,6 +894,7 @@ id bottom_right
 id bounce
 id brLat
 id brLon
+id button2
 id buttonPanel
 id camera_btn
 id cancel_filter_btn

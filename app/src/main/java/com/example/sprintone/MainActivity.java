@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sprintone.Gallery.GallerySingleton;
 import com.example.sprintone.Navigation.GalleryTraversal;
 
 import java.io.File;
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout captionArea;
     private GalleryTraversal traversal;
 
+    private GallerySingleton gallery = GallerySingleton.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,10 +71,13 @@ public class MainActivity extends AppCompatActivity {
         coordinates = findViewById(R.id.coordinate);
 
         hideEditCaption(captionArea);
+
+
         ArrayList<String> files = getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "");
         if (files.size() > 0) {
+            gallery.setGallery(files, files.size() - 1);
             traversal = new GalleryTraversal(files);
-            updateCurrentPhoto(traversal.getPhotoPaths().size() - 1);
+            updateCurrentPhoto(gallery.getGalleryPointer());
         } else {
             setPic(null);
         }
@@ -172,10 +178,10 @@ public class MainActivity extends AppCompatActivity {
     //
     private void updateCurrentPhoto(int pointer) {
         //moves the pointer the the updated location and sets the picture
-        traversal.traverseGallery(pointer);
-        //setExif(traversal.getCurrentPhotoPath());
+        //traversal.traverseGallery(pointer);
+        gallery.traverseGallery(pointer);
         //photoPointer = pointer;
-        setPic(traversal.getCurrentPhotoPath());
+        setPic(gallery.getPhotoPath());
     }
 
     //Handler for the filter function of the app
@@ -318,25 +324,30 @@ public class MainActivity extends AppCompatActivity {
                     startTimestamp = null;
                     endTimestamp = null;
                 }
-                String keywords = data.getStringExtra("KEYWORDS");
-                traversal.setPhotoPaths(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords));
-                //Log.d("Photo Path", "Photo Path:" + traversal.getPhotoPaths());
+                String keywords = (String) data.getStringExtra("KEYWORDS");
+                //traversal.setPhotoPaths(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords));
+                gallery.setGallery(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords), gallery.getGalleryPointer());
+                Log.d("Photo Path", "Photo Path:" + traversal.getPhotoPaths());
                 if (traversal.getPhotoPaths().size() == 0) {
                     Log.d("Set null", "No Picture Found");
                     setPic(null);
                 } else {
-                    updateCurrentPhoto(traversal.getPhotoPaths().size() - 1);
+                    //updateCurrentPhoto(traversal.getPhotoPaths().size() - 1);
+                    updateCurrentPhoto(gallery.getPhotoPaths().size() - 1);
                     Log.d("Set pic", "Picture Found");
                 }
             }
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+
+            //traversal.setPhotoPaths(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), ""));
+
+
             Log.d("Intent value: ", data.toString());
             ArrayList<String> files = getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "");
             if (files.size() > 0) {
-                traversal = new GalleryTraversal(files);
-                //update to most recent photo
-                updateCurrentPhoto(traversal.getPhotoPaths().size() - 1);
+                gallery.setGallery(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), ""), gallery.getGalleryPointer());
+                updateCurrentPhoto(gallery.getPhotoPaths().size() - 1);
             }
             else{
                 setPic(null);
@@ -386,9 +397,9 @@ public class MainActivity extends AppCompatActivity {
         if (view.getId() == R.id.prev_btn) {
             hideEditCaption(captionArea);
             captionText.setVisibility(View.VISIBLE);
-            if (traversal.getPhotoPointer() > 0) {
-                updateCurrentPhoto(traversal.getPhotoPointer() - 1);
-                //traversal.getCurrentPhotoPath() = updatePhotoPath(--photoPointer);
+            if (gallery.getGalleryPointer() > 0) {
+                //updateCurrentPhoto(traversal.getPhotoPointer() - 1);
+                updateCurrentPhoto(gallery.getGalleryPointer() - 1);
                 Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
             }
             else {
@@ -399,15 +410,32 @@ public class MainActivity extends AppCompatActivity {
         else if (view.getId() == R.id.next_btn) {
             hideEditCaption(captionArea);
             captionText.setVisibility(View.VISIBLE);
-            if (traversal.getPhotoPointer() < traversal.getPhotoPaths().size() - 1) {
-                updateCurrentPhoto(traversal.getPhotoPointer() + 1);
-                //traversal.getCurrentPhotoPath() = updatePhotoPath(++photoPointer);
+            if (gallery.getGalleryPointer() < gallery.getPhotoPaths().size() - 1) {
+                //updateCurrentPhoto(traversal.getPhotoPointer() + 1);
+                updateCurrentPhoto(gallery.getGalleryPointer() + 1);
                 Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
             }
             else {
                 Toast.makeText(MainActivity.this, "Last image",
                         Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    //deletes an image
+    public void deletePhoto(View view) {
+        Log.d("Delete", "In Delete");
+
+        try {
+            File file = new File(gallery.getPhotoPath());
+            boolean deleted = file.delete();
+            if (deleted) {
+                gallery.removeFromGallery();
+                updateCurrentPhoto(gallery.getGalleryPointer());
+            }
+            Log.d("Delete?", "Deleted: " + deleted);
+        } catch (IndexOutOfBoundsException e) {
+            Log.d("Delete out of bounds", "Tried to remove out of bounds");
         }
     }
 }
