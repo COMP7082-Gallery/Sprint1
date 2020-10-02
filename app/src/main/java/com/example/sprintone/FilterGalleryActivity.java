@@ -8,10 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class FilterGalleryActivity extends AppCompatActivity {
@@ -91,10 +89,10 @@ public class FilterGalleryActivity extends AppCompatActivity {
 
         i.putExtra("STARTTIMESTAMP", from.getText() != null ? from.getText().toString() : "");
         i.putExtra("ENDTIMESTAMP", to.getText() != null ? to.getText().toString() : "");
-        i.putExtra("TOPLEFTLATITUDE", tlLat.getText() != null ? to.getText().toString() : "");
-        i.putExtra("TOPLEFTLONGITUDE", tlLon.getText() != null ? to.getText().toString() : "");
-        i.putExtra("BTMRIGHTLATITUDE", brLat.getText() != null ? to.getText().toString() : "");
-        i.putExtra("BTMRIGHTLONGITUDE", brLon.getText() != null ? to.getText().toString() : "");
+        i.putExtra("TOPLEFTLATITUDE", tlLat.getText() != null ? tlLat.getText().toString() : "");
+        i.putExtra("TOPLEFTLONGITUDE", tlLon.getText() != null ? tlLon.getText().toString() : "");
+        i.putExtra("BTMRIGHTLATITUDE", brLat.getText() != null ? brLat.getText().toString() : "");
+        i.putExtra("BTMRIGHTLONGITUDE", brLon.getText() != null ? brLon.getText().toString() : "");
         i.putExtra("KEYWORDS", keywords.getText() != null ? keywords.getText().toString() : "");
         setResult(RESULT_OK, i);
         finish();
