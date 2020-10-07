@@ -27,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sprintone.Gallery.GallerySingleton;
-import com.example.sprintone.Navigation.GalleryTraversal;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText editCaption;
     private TextView captionText;
     private LinearLayout captionArea;
-    private GalleryTraversal traversal;
 
     private GallerySingleton gallery = GallerySingleton.getInstance();
 
@@ -75,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> files = getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "", "", "", "", "", "");
         if (files.size() > 0) {
             gallery.setGallery(files, files.size() - 1);
-            traversal = new GalleryTraversal(files);
             updateCurrentPhoto(gallery.getGalleryPointer());
         } else {
             setPic(null);
@@ -176,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
     //
     private void updateCurrentPhoto(int pointer) {
         //moves the pointer the the updated location and sets the picture
-        //traversal.traverseGallery(pointer);
         gallery.traverseGallery(pointer);
         //photoPointer = pointer;
         setPic(gallery.getPhotoPath());
@@ -233,13 +229,12 @@ public class MainActivity extends AppCompatActivity {
                 storageDir      /* directory */
         );
         // Save a file: path for use with ACTION_VIEW intents
-        //traversal.getCurrentPhotoPath() = image.getAbsolutePath();
         return image;
     }
 
     //
     //creates a high-res image
-    //creates the image, time stamp and caption based on the traversal.getCurrentPhotoPath()
+    //creates the image, time stamp and caption based on the
     //
     private void setPic(String path) {
         // Get the dimensions of the View
@@ -331,7 +326,6 @@ public class MainActivity extends AppCompatActivity {
                 //--------------------------------------------------------------
                 String shape = locationFilter(tlLat, tlLon, brLat, brLon);
                 //--------------------------------------------------------------
-                //traversal.setPhotoPaths(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords));
                 if (shape.equals("invalid")){
                     gallery.setGallery(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords, "", "","", "",""), gallery.getGalleryPointer());
                     Toast.makeText(MainActivity.this, "Invalid Coordinates", Toast.LENGTH_SHORT).show();
@@ -350,7 +344,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            //traversal.setPhotoPaths(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), ""));
             Log.d("Intent value: ", data.toString());
             ArrayList<String> files = getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "", "", "", "", "", "");
             if (files.size() > 0) {
@@ -481,17 +474,14 @@ public class MainActivity extends AppCompatActivity {
 
     //
     //Allows users to traverse through their gallery of images
-    //The traversal.getCurrentPhotoPath() is assigned with the current image to view
-    //The photoPointer is updated to the index of the traversal.getCurrentPhotoPath()
+    //The photoPointer is updated to the index of the
     //
     public void traverseGallery(View view) {
         if (view.getId() == R.id.prev_btn) {
             hideEditCaption(captionArea);
             captionText.setVisibility(View.VISIBLE);
             if (gallery.getGalleryPointer() > 0) {
-                //updateCurrentPhoto(traversal.getPhotoPointer() - 1);
                 updateCurrentPhoto(gallery.getGalleryPointer() - 1);
-                Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
             }
             else {
                 Toast.makeText(MainActivity.this, "First image",
@@ -502,9 +492,8 @@ public class MainActivity extends AppCompatActivity {
             hideEditCaption(captionArea);
             captionText.setVisibility(View.VISIBLE);
             if (gallery.getGalleryPointer() < gallery.getPhotoPaths().size() - 1) {
-                //updateCurrentPhoto(traversal.getPhotoPointer() + 1);
                 updateCurrentPhoto(gallery.getGalleryPointer() + 1);
-                Log.d("Traversal", "Pointer at: " + traversal.getPhotoPointer());
+
             }
             else {
                 Toast.makeText(MainActivity.this, "Last image",
