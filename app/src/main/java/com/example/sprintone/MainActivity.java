@@ -6,6 +6,7 @@ import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -528,5 +529,17 @@ public class MainActivity extends AppCompatActivity {
         } catch (IndexOutOfBoundsException e) {
             Log.d("Delete out of bounds", "Tried to remove out of bounds");
         }
+    }
+
+    public void sharePhoto (View view)
+    {
+        String type = "image/*";
+        File file = new File (gallery.getPhotoPath());
+        Intent share = new Intent (Intent.ACTION_SEND);
+
+        share.setType(type);
+        Uri uri = Uri.fromFile(file);
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(Intent.createChooser(share, "Share to"));
     }
 }
