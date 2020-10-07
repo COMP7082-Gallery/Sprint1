@@ -76,7 +76,5 @@ public class GallerySingleton {
         if (upd_pointer > -1 && upd_pointer < photoPaths.size())
             this.galleryPointer = upd_pointer;
 
-        Log.d("huh", "huh: " + galleryPointer);
-        Log.d("heh", "heh arr size: " + photoPaths.size());
     }
 }
