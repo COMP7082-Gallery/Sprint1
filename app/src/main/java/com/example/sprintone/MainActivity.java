@@ -10,12 +10,15 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -533,13 +536,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void sharePhoto (View view)
     {
-        String type = "image/*";
-        File file = new File (gallery.getPhotoPath());
-        Intent share = new Intent (Intent.ACTION_SEND);
+        Intent send  = new Intent();
+        File file    = new File (gallery.getPhotoPath());
+        Uri imageUri = FileProvider.getUriForFile(this, "com.example.sprintone.android.fileprovider", file);
 
-        share.setType(type);
-        Uri uri = Uri.fromFile(file);
-        share.putExtra(Intent.EXTRA_STREAM, uri);
-        startActivity(Intent.createChooser(share, "Share to"));
+        send.setAction(Intent.ACTION_SEND);
+        send.putExtra(Intent.EXTRA_TITLE, "COMP 7082");
+        send.putExtra(Intent.EXTRA_SUBJECT, "Picture to Send");
+        send.putExtra(Intent.EXTRA_STREAM, imageUri);
+        send.setType("image/*");
+
+        if (file != null) Log.d ( "Pass", "File Exists" );
+        else Log.d ("File Error", "File does not exist");
+
+        startActivity(Intent.createChooser(send, null));
     }
 }
