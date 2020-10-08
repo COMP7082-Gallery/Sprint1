@@ -24,7 +24,7 @@ pipeline {
 
     stage('UI Testing') {
       steps {
-        script {                                  (****)                          
+        script {                                                        
           if (currentBuild.result == null         
               || currentBuild.result == 'SUCCESS') {  
           // Start your emulator, testing tools
