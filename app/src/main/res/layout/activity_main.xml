@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="dispatchTakePictureIntent"
-            android:text="Camera" />
+            android:text="Cam" />
 
         <Button
             android:id="@+id/next_btn"
@@ -93,6 +93,22 @@
             android:layout_weight="1"
             android:onClick="traverseGallery"
             android:text="next" />
+
+        <Button
+            android:id="@+id/share_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="sharePhoto"
+            android:text="Share" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="deletePhoto"
+            android:text="Delete" />
 
     </LinearLayout>
 
