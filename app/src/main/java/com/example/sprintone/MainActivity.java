@@ -403,6 +403,7 @@ public class MainActivity extends AppCompatActivity {
                         && (keywords.equals("") || file.getPath().contains(keywords))) {
                     if (!shape.equals("none") && !shape.equals("")) {
                         String[] attr = file.getPath().split("_");
+                        Log.d("image search loop:", parseFloat(tlLat) + " and " + parseFloat(brLat) + " and " + parseFloat(tlLon) + " and " + parseFloat(brLon) + " and " + attr[4] + " and " +  attr[5] + " and " + shape);
                         if ((shape.equals("x1") && attr[4].equals(tlLat)) || (shape.equals("y1") && attr[5].equals(tlLon))
                                 || (shape.equals("x2") && attr[4].equals(brLat)) || (shape.equals("y2") && attr[5].equals(brLon))
                                 || (shape.equals("x1y1") && attr[4].equals(tlLat) && attr[5].equals(tlLon))
@@ -415,7 +416,7 @@ public class MainActivity extends AppCompatActivity {
                                 || (shape.equals("x1y1y2") && attr[4].equals(tlLat) && (parseFloat(attr[5]) <= parseFloat(brLon)) && (parseFloat(attr[5]) >= parseFloat(tlLon)))
                                 || (shape.equals("x2y1y2") && attr[4].equals(brLat) && (parseFloat(attr[5]) <= parseFloat(brLon)) && (parseFloat(attr[5]) >= parseFloat(tlLon)))
                                 || (shape.equals("x1x2y2") && attr[5].equals(brLon) && (parseFloat(attr[4]) <= parseFloat(tlLat)) && (parseFloat(attr[4]) >= parseFloat(brLat)))
-                                || (shape.equals("x1y1x2y2") && (parseFloat(attr[4]) <= parseFloat(tlLat)) && (parseFloat(attr[4]) >= parseFloat(brLat))
+                                || (shape.equals("x1x2y1y2") && (parseFloat(attr[4]) <= parseFloat(tlLat)) && (parseFloat(attr[4]) >= parseFloat(brLat))
                                 && (parseFloat(attr[5]) <= parseFloat(brLon)) && (parseFloat(attr[5]) >= parseFloat(tlLon)))) {
                             paths.add(file.getAbsolutePath());
                         }
