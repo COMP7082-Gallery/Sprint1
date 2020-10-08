@@ -894,6 +894,7 @@ id bottom_right
 id bounce
 id brLat
 id brLon
+id button2
 id buttonPanel
 id camera_btn
 id cancel_filter_btn
@@ -1026,6 +1027,7 @@ id search_plate
 id search_src_text
 id search_voice_btn
 id select_dialog_listview
+id share_btn
 id shortcut
 id showCustom
 id showHome
@@ -1168,6 +1170,7 @@ string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
 string app_name
 string search_menu_title
+string send_to
 string status_bar_notification_info_overflow
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
