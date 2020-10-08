@@ -9,7 +9,7 @@ public class GallerySingleton {
 
     private static final GallerySingleton SINGLE_INSTANCE = new GallerySingleton();
 
-    private ArrayList<String> photoPaths = null;
+    private ArrayList<String> photoPaths = new ArrayList<String>();
     private int galleryPointer = -1;
 
     private GallerySingleton() {}
@@ -64,16 +64,20 @@ public class GallerySingleton {
     //Else stays at location 0
     //
     public void removeFromGallery() throws IndexOutOfBoundsException {
-        photoPaths.remove(galleryPointer);
-        //if delete photo, display prev photo; else stay at photo with index 0 "New first photo"
-        if (galleryPointer > 0)
-            galleryPointer--;
+
+        if (!photoPaths.isEmpty())
+        {
+            photoPaths.remove(galleryPointer);
+            //if delete photo, display prev photo; else stay at photo with index 0 "New first photo"
+            if (galleryPointer > 0)
+                galleryPointer--;
+        }
     }
 
     //updates the photopointer based on the updated pointer location
     //
     public void traverseGallery(int upd_pointer) {
-        if (upd_pointer > -1 && upd_pointer < photoPaths.size())
+        if (!photoPaths.isEmpty() && upd_pointer > -1 && upd_pointer < photoPaths.size())
             this.galleryPointer = upd_pointer;
 
     }
