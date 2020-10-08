@@ -10,17 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6b25cb4-2ae0-4ede-8bf2-c17ff954464a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/androidTest/java/com/example/sprintone/UITestFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/androidTest/java/com/example/sprintone/UITestFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -414,30 +404,30 @@
     </state>
     <state x="550" y="140" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1600375838217" />
     <state x="688" y="177" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1600703564944" />
-    <state width="1329" height="292" key="GridCell.Tab.0.bottom" timestamp="1600974728777">
+    <state width="1329" height="292" key="GridCell.Tab.0.bottom" timestamp="1601317389781">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1492" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1600377241290" />
     <state width="1764" height="228" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1600389126750" />
-    <state width="1329" height="292" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600974728777" />
-    <state width="1329" height="292" key="GridCell.Tab.0.center" timestamp="1600974728774">
+    <state width="1329" height="292" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1601317389781" />
+    <state width="1329" height="292" key="GridCell.Tab.0.center" timestamp="1601317389780">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1492" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1600377241290" />
     <state width="1764" height="228" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1600389126750" />
-    <state width="1329" height="292" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600974728774" />
-    <state width="1329" height="292" key="GridCell.Tab.0.left" timestamp="1600974728774">
+    <state width="1329" height="292" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1601317389780" />
+    <state width="1329" height="292" key="GridCell.Tab.0.left" timestamp="1601317389747">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1492" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1600377241290" />
     <state width="1764" height="228" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1600389126750" />
-    <state width="1329" height="292" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600974728774" />
-    <state width="1329" height="292" key="GridCell.Tab.0.right" timestamp="1600974728776">
+    <state width="1329" height="292" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1601317389747" />
+    <state width="1329" height="292" key="GridCell.Tab.0.right" timestamp="1601317389781">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1492" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1600377241290" />
     <state width="1764" height="228" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1600389126750" />
-    <state width="1329" height="292" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600974728776" />
+    <state width="1329" height="292" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1601317389781" />
     <state x="94" y="94" width="1349" height="637" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1600376115090">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
