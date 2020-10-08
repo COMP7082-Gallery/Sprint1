@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -41,8 +43,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
+import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
 
 public class MainActivity extends AppCompatActivity {
@@ -84,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
         askForPermission();
     }
 
+    //
+    // Ask permission from user for both GPS and Network access.
+    //
     private void askForPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -93,11 +100,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //
+    // Get the location from GPS or Network provider.
+    //
     private ArrayList<String> getLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         List<String> providers = locationManager.getProviders(true);
         ArrayList<String> coordinates = new ArrayList<>();
         String locationProvider;
+        // Use GPS as the first choice, if not, use network data
         if (providers.contains(LocationManager.GPS_PROVIDER)) {
             locationProvider = LocationManager.GPS_PROVIDER;
         } else {
@@ -106,41 +117,38 @@ public class MainActivity extends AppCompatActivity {
 
         if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 || (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_CODE);
+            askForPermission();
             Log.d("Ask permission", "true");
-        } else {
-            locationManager.requestLocationUpdates(locationProvider, 500, 0, locationListener);
-            Location location = locationManager.getLastKnownLocation(locationProvider);
-            if (location != null) {
-                coordinates.add(String.valueOf(location.getLatitude()));
-                coordinates.add(String.valueOf(location.getLongitude()));
-                Log.d("Coordinates: ", location.getLongitude() + " " + location.getLatitude() + "");
-            }
-            else{
-                coordinates = new ArrayList<>(Arrays.asList("0.0", "0.0"));
-            }
         }
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            @Override
+            public void onProviderEnabled(String provider) {}
+
+            @Override
+            public void onProviderDisabled(String provider) {}
+
+            @Override
+            public void onLocationChanged(Location location) {
+                if (location != null) {
+                    Log.d("Coordinates: listen", location.getLongitude() + " " + location.getLatitude() + "");
+                }
+            }
+        };
+        Location location = locationManager.getLastKnownLocation(locationProvider);
+        locationManager.requestLocationUpdates(locationProvider, 10, 0, locationListener);
+        while(location == null){
+            location = locationManager.getLastKnownLocation(locationProvider);
+        }
+        coordinates.add(String.valueOf(location.getLatitude()));
+        coordinates.add(String.valueOf(location.getLongitude()));
+        Log.d("Coordinates: ", location.getLongitude() + " " + location.getLatitude() + "");
         locationManager.removeUpdates(locationListener);
         return coordinates;
     }
 
-    public LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-        @Override
-        public void onProviderEnabled(String provider) {}
-
-        @Override
-        public void onProviderDisabled(String provider) {}
-
-        @Override
-        public void onLocationChanged(Location location) {
-            if (location != null) {
-                Log.d("Coordinates: listen", location.getLongitude() + " " + location.getLatitude() + "");
-            }
-        }
-    };
 
     /* Initially hides edit text box */
     public void hideEditCaption(View view){
@@ -187,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
     public void startFilter(View view) {
         Intent intent = new Intent(this, FilterGalleryActivity.class);
         startActivityForResult(intent, FILTER_ACTIVITY_REQUEST_CODE);
-
     }
 
     //
@@ -292,10 +299,22 @@ public class MainActivity extends AppCompatActivity {
             } else {
             //------------------------------------------------------------------
                 timeStamp.setText(formatDateTime);
-                coordinates.setText(attr[4] + ",  " + attr[5]);
+                coordinates.setText(locationFormat(attr[4], attr[5]));
                 captionText.setText(attr[1]);
             }
         }
+    }
+    public String locationFormat (String lat, String lon) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> address = geocoder.getFromLocation(parseDouble(lat), parseDouble(lon), 1);
+            String city = address.get(0).getLocality();
+            return city + " " + lat + ", " + lon;
+        } catch (IOException e){
+            e.printStackTrace();
+            return lat + ", " + lon;
+        }
+
     }
 
     //
