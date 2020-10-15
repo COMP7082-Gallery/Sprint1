@@ -52,7 +52,7 @@ public class GallerySingleton {
     //Not sure if gonna use
     public void addToGallery(String path) {
         photoPaths.add(path);
-        galleryPointer = photoPaths.size() - 1;
+        //do we wanna keep the pointer at current location? Or move to the newly taken picture?
     }
 
     //

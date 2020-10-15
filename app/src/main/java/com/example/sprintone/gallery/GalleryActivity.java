@@ -53,6 +53,8 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
     static final int FILTER_ACTIVITY_REQUEST_CODE = 2;
     public static final int LOCATION_CODE = 301;
 
+    private String captured_image_path;
+
     private ImageView imageView;
     private TextView timeStamp;
     private TextView coordinates;
@@ -157,39 +159,18 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
     }
 
     /* Edit caption for existing photo */
-    //PRESENTER
-    //BC DATABASE
     public void editCaption(View view){
-        //Log.d("String", "String" + captionText.getText().toString());
         editCaption.setText(captionText.getText().toString());
         captionText.setVisibility(View.GONE);
         captionArea.setVisibility(View.VISIBLE);
     }
 
-//    //PRESENTER
-//    //BC DATABASE
-//    public void saveCaption(View view) {
-//        captionText.setText(editCaption.getText().toString());
-//        String[] attr = gallery.getPhotoPath().split("_");
-//        Log.d("Files", "CurrentFileName:" + gallery.getPhotoPath());
-//        if (attr.length == 7 && editCaption.getText().toString() != "") {
-//            File newName = new File(attr[0] + "_" + editCaption.getText().toString() + "_" + attr[2] + "_" + attr[3] + "_" + attr[4] + "_" + attr[5] + "_" + attr[6]);
-//            Log.d("Files", "NewFileName:" + newName.getAbsolutePath());
-//            File oldName = new File(gallery.getPhotoPath());
-//            Log.d("Files", "OldFileName:" + gallery.getPhotoPath());
-//            oldName.renameTo(newName);
-//            gallery.setPhotoPath(newName.getAbsolutePath());
-//        }
-//        hideEditCaption(captionArea);
-//        captionText.setVisibility(View.VISIBLE);
-//    }
 
     //PRESENTER
     //BC DATABASE
     public void saveCaption(View view) {
         captionText.setText(editCaption.getText().toString());
-
-        presenter.editCaption(gallery, editCaption.getText().toString());
+        presenter.saveCaption(gallery, editCaption.getText().toString());
 
         hideEditCaption(captionArea);
         captionText.setVisibility(View.VISIBLE);
@@ -202,7 +183,6 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
     private void updateCurrentPhoto(int pointer) {
         //moves the pointer the the updated location and sets the picture
         gallery.traverseGallery(pointer);
-        //photoPointer = pointer;
         setPic(gallery.getPhotoPath());
     }
 
@@ -232,6 +212,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
                 Uri imageUri = FileProvider.getUriForFile(this, "com.example.sprintone.android.fileprovider", imageFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                captured_image_path = imageFile.getAbsolutePath();
                 Log.e("imageFile", imageFile.getAbsolutePath());
                 //setExif(imageUri);
             }
@@ -372,16 +353,20 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
                 }
             }
         }
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Log.d("Intent value: ", data.toString());
-            ArrayList<String> files = getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "", "", "", "", "", "");
-            if (files.size() > 0) {
-                gallery.setGallery(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "", "", "", "", "", ""), gallery.getGalleryPointer());
+        //
+        //adding a photo to gallery/db
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && captured_image_path != null) {
+            presenter.addPhoto(gallery, captured_image_path);
+
+            if (gallery.getPhotoPaths().size() > 0)
                 updateCurrentPhoto(gallery.getPhotoPaths().size() - 1);
-            }
-            else{
+            else
                 setPic(null);
-            }
+            captured_image_path = null;
+        }
+        else
+        {
+            Log.e("Error", "Error adding photo to the gallery");
         }
     }
 

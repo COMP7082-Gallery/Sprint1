@@ -19,8 +19,10 @@ public class GalleryActivityPresenter implements GalleryActivityMVP.Presenter {
     public void setView(GalleryActivityMVP.View view) { this.view = view; }
 
 
-    public void addPhoto() {
-
+    public void addPhoto(GallerySingleton gallery, String path) {
+        //add a path to the gallery
+        gallery.addToGallery(path);
+        //add a Picture to the db
     }
 
 
@@ -45,7 +47,7 @@ public class GalleryActivityPresenter implements GalleryActivityMVP.Presenter {
         return -1;
     }
 
-    public void editCaption(GallerySingleton gallery, String edit_caption) {
+    public void saveCaption(GallerySingleton gallery, String edit_caption) {
         String[] attr = gallery.getPhotoPath().split("_");
         Log.d("Files", "CurrentFileName:" + gallery.getPhotoPath());
         if (attr.length == 7 && edit_caption != "") {

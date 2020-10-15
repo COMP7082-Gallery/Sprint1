@@ -14,12 +14,9 @@ public interface GalleryActivityMVP {
 
     interface Presenter {
         void setView(GalleryActivityMVP.View view);
-
-        void addPhoto();
-
+        void addPhoto(GallerySingleton gallery, String path);
         int deletePhoto(GallerySingleton gallery);
-
-        void editCaption(GallerySingleton gallery, String edit_caption);
+        void saveCaption(GallerySingleton gallery, String edit_caption);
 
 
     }
