@@ -43,7 +43,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name="com.example.sprintone.FilterGalleryActivity" />
+        <activity android:name="com.example.sprintone.filter_gallery.FilterGalleryActivity" />
         <activity
             android:name="com.example.sprintone.gallery.GalleryActivity"
             android:screenOrientation="portrait" >

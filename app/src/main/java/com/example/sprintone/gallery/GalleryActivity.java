@@ -28,7 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
-import com.example.sprintone.FilterGalleryActivity;
+import com.example.sprintone.filter_gallery.FilterGalleryActivity;
 import com.example.sprintone.R;
 import com.example.sprintone.traversal.GallerySingleton;
 
