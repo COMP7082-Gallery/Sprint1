@@ -1,8 +1,6 @@
 package com.example.sprintone;
 
-import android.util.Log;
-
-import com.example.sprintone.Gallery.GallerySingleton;
+import com.example.sprintone.traversal.GallerySingleton;
 //import com.example.sprintone.Navigation.GalleryTraversal;
 
 import org.junit.Test;

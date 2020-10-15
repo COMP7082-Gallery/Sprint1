@@ -1,8 +1,5 @@
-package com.example.sprintone.Gallery;
+package com.example.sprintone.traversal;
 
-import android.util.Log;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GallerySingleton {

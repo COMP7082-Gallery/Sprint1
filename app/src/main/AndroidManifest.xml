@@ -29,7 +29,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <activity android:name=".FilterGalleryActivity" />
-        <activity android:name=".MainActivity" android:screenOrientation="portrait">
+        <activity android:name=".gallery.GalleryActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

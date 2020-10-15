@@ -85,10 +85,10 @@
 46-->C:\Users\sam_t\AndroidStudioProjects\Sprint1\app\src\main\AndroidManifest.xml:31:19-56
 47        <activity
 47-->C:\Users\sam_t\AndroidStudioProjects\Sprint1\app\src\main\AndroidManifest.xml:32:9-38:20
-48            android:name="com.example.sprintone.MainActivity"
-48-->C:\Users\sam_t\AndroidStudioProjects\Sprint1\app\src\main\AndroidManifest.xml:32:19-47
+48            android:name="com.example.sprintone.gallery.GalleryActivity"
+48-->C:\Users\sam_t\AndroidStudioProjects\Sprint1\app\src\main\AndroidManifest.xml:32:19-58
 49            android:screenOrientation="portrait" >
-49-->C:\Users\sam_t\AndroidStudioProjects\Sprint1\app\src\main\AndroidManifest.xml:32:48-84
+49-->C:\Users\sam_t\AndroidStudioProjects\Sprint1\app\src\main\AndroidManifest.xml:32:59-95
 50            <intent-filter>
 50-->C:\Users\sam_t\AndroidStudioProjects\Sprint1\app\src\main\AndroidManifest.xml:33:13-37:29
 51                <action android:name="android.intent.action.MAIN" />
