@@ -1,16 +1,10 @@
-package com.example.sprintone;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
+package com.example.sprintone.gallery;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -18,9 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -32,7 +24,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.sprintone.Gallery.GallerySingleton;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+
+import com.example.sprintone.filter_gallery.FilterGalleryActivity;
+import com.example.sprintone.R;
+import com.example.sprintone.traversal.GallerySingleton;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,11 +47,13 @@ import java.util.Objects;
 import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
 
-public class MainActivity extends AppCompatActivity {
+public class GalleryActivity extends AppCompatActivity implements GalleryActivityMVP.View {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int FILTER_ACTIVITY_REQUEST_CODE = 2;
     public static final int LOCATION_CODE = 301;
+
+    private String captured_image_path;
 
     private ImageView imageView;
     private TextView timeStamp;
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout captionArea;
 
     private GallerySingleton gallery = GallerySingleton.getInstance();
+    private GalleryActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         captionText = findViewById(R.id.captionText);
         editCaption = findViewById(R.id.editCaptionView);
         coordinates = findViewById(R.id.coordinate);
+
+        presenter = new GalleryActivityPresenter(null);
 
         hideEditCaption(captionArea);
 
@@ -157,24 +160,18 @@ public class MainActivity extends AppCompatActivity {
 
     /* Edit caption for existing photo */
     public void editCaption(View view){
-        //Log.d("String", "String" + captionText.getText().toString());
         editCaption.setText(captionText.getText().toString());
         captionText.setVisibility(View.GONE);
         captionArea.setVisibility(View.VISIBLE);
     }
 
-    public void saveCaption(View view){
+
+    //PRESENTER
+    //BC DATABASE
+    public void saveCaption(View view) {
         captionText.setText(editCaption.getText().toString());
-        String[] attr = gallery.getPhotoPath().split("_");
-        Log.d("Files", "CurrentFileName:" + gallery.getPhotoPath());
-        if (attr.length == 7 && editCaption.getText().toString() != "") {
-            File newName = new File(attr[0] + "_" + editCaption.getText().toString() + "_" + attr[2] + "_" + attr[3] + "_" + attr[4] + "_" + attr[5] + "_" + attr[6]);
-            Log.d("Files", "NewFileName:" + newName.getAbsolutePath());
-            File oldName = new File(gallery.getPhotoPath());
-            Log.d("Files", "OldFileName:" + gallery.getPhotoPath());
-            oldName.renameTo(newName);
-            gallery.setPhotoPath(newName.getAbsolutePath());
-        }
+        presenter.saveCaption(gallery, editCaption.getText().toString());
+
         hideEditCaption(captionArea);
         captionText.setVisibility(View.VISIBLE);
     }
@@ -186,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
     private void updateCurrentPhoto(int pointer) {
         //moves the pointer the the updated location and sets the picture
         gallery.traverseGallery(pointer);
-        //photoPointer = pointer;
         setPic(gallery.getPhotoPath());
     }
 
@@ -216,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri imageUri = FileProvider.getUriForFile(this, "com.example.sprintone.android.fileprovider", imageFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                captured_image_path = imageFile.getAbsolutePath();
                 Log.e("imageFile", imageFile.getAbsolutePath());
                 //setExif(imageUri);
             }
@@ -248,20 +245,9 @@ public class MainActivity extends AppCompatActivity {
     //creates the image, time stamp and caption based on the
     //
     private void setPic(String path) {
-        // Get the dimensions of the View
-        //int targetW = imageView.getWidth();
-        //int targetH = imageView.getHeight();
-
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
-
-        //int photoW = bmOptions.outWidth;
-        //int photoH = bmOptions.outHeight;
-
-        //divide by zero problem when loading the most recent photo
-        //oncreate
-        //int scaleFactor = Math.max(1, Math.min(photoW / targetW, photoH / targetH));
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
@@ -297,13 +283,14 @@ public class MainActivity extends AppCompatActivity {
                 coordinates.setText("Location");
                 captionText.setText(attr[1]);
             } else {
-            //------------------------------------------------------------------
+                //------------------------------------------------------------------
                 timeStamp.setText(formatDateTime);
                 coordinates.setText(locationFormat(attr[4], attr[5]));
                 captionText.setText(attr[1]);
             }
         }
     }
+
     public String locationFormat (String lat, String lon) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
@@ -351,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
                 //--------------------------------------------------------------
                 if (shape.equals("invalid")){
                     gallery.setGallery(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords, "", "","", "",""), gallery.getGalleryPointer());
-                    Toast.makeText(MainActivity.this, "Invalid Coordinates", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.example.sprintone.gallery.GalleryActivity.this, "Invalid Coordinates", Toast.LENGTH_SHORT).show();
                 } else {
                     gallery.setGallery(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords, tlLat, tlLon, brLat, brLon, shape), gallery.getGalleryPointer());
                 }
@@ -366,22 +353,28 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Log.d("Intent value: ", data.toString());
-            ArrayList<String> files = getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "", "", "", "", "", "");
-            if (files.size() > 0) {
-                gallery.setGallery(getPhotoPathsFromDir(new Date(Long.MIN_VALUE), new Date(), "", "", "", "", "", ""), gallery.getGalleryPointer());
+        //
+        //adding a photo to gallery/db
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && captured_image_path != null) {
+            presenter.addPhoto(gallery, captured_image_path);
+
+            if (gallery.getPhotoPaths().size() > 0)
                 updateCurrentPhoto(gallery.getPhotoPaths().size() - 1);
-            }
-            else{
+            else
                 setPic(null);
-            }
+            captured_image_path = null;
+        }
+        else
+        {
+            Log.e("Error", "Error adding photo to the gallery");
         }
     }
 
     //
     //Returns all the the photo file paths as a String array
     //
+    //will access db
+    //PRESENTER
     private ArrayList<String> getPhotoPathsFromDir(Date startTimestamp, Date endTimestamp, String keywords, String tlLat, String tlLon, String brLat, String brLon, String shape) {
         String dir_path = getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString();
         Log.d("Path", "Whats the path: " + getExternalFilesDir(Environment.DIRECTORY_PICTURES));
@@ -508,7 +501,7 @@ public class MainActivity extends AppCompatActivity {
                 updateCurrentPhoto(gallery.getGalleryPointer() - 1);
             }
             else {
-                Toast.makeText(MainActivity.this, "First image",
+                Toast.makeText(com.example.sprintone.gallery.GalleryActivity.this, "First image",
                         Toast.LENGTH_SHORT).show();
             }
         }
@@ -520,26 +513,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
             else {
-                Toast.makeText(MainActivity.this, "Last image",
+                Toast.makeText(com.example.sprintone.gallery.GalleryActivity.this, "Last image",
                         Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+
     //deletes an image
     public void deletePhoto(View view) {
-        Log.d("Delete", "In Delete");
-
-        try {
-            File file = new File(gallery.getPhotoPath());
-            boolean deleted = file.delete();
-            if (deleted) {
-                gallery.removeFromGallery();
-                updateCurrentPhoto(gallery.getGalleryPointer());
-            }
-            Log.d("Delete?", "Deleted: " + deleted);
-        } catch (IndexOutOfBoundsException e) {
-            Log.d("Delete out of bounds", "Tried to remove out of bounds");
+        if (presenter.deletePhoto(gallery) > -1)
+        {
+            updateCurrentPhoto(gallery.getGalleryPointer());
+        }
+        else
+        {
+            Log.d("d", "There was a problem deleting the image");
         }
     }
 
@@ -561,3 +550,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(send, null));
     }
 }
+
