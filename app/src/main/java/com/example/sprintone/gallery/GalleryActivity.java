@@ -46,6 +46,7 @@ import java.util.Objects;
 
 import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
+import static java.lang.Math.toIntExact;
 
 public class GalleryActivity extends AppCompatActivity implements GalleryActivityMVP.View {
 
@@ -141,13 +142,13 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
             }
         };
         Location location = locationManager.getLastKnownLocation(locationProvider);
-        locationManager.requestLocationUpdates(locationProvider, 10, 0, locationListener);
+        locationManager.requestLocationUpdates(locationProvider, 1000, 0, locationListener);
         while(location == null){
             location = locationManager.getLastKnownLocation(locationProvider);
         }
         coordinates.add(String.valueOf(location.getLatitude()));
         coordinates.add(String.valueOf(location.getLongitude()));
-        Log.d("Coordinates: ", location.getLongitude() + " " + location.getLatitude() + "");
+        Log.d("Coordinates: ", location.getLongitude() + " " + location.getLatitude());
         locationManager.removeUpdates(locationListener);
         return coordinates;
     }
@@ -274,23 +275,16 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
             }
             SimpleDateFormat newFormat = new SimpleDateFormat("MMM d, yyyy h:mm a");
             String formatDateTime = newFormat.format(date);
-
-            //------------------------------------------------------------------
-            // This section can be removed once we implement our delete function
-            //------------------------------------------------------------------
-            if (attr.length < 6) {
-                timeStamp.setText(formatDateTime);
-                coordinates.setText("Location");
-                captionText.setText(attr[1]);
-            } else {
-                //------------------------------------------------------------------
-                timeStamp.setText(formatDateTime);
-                coordinates.setText(locationFormat(attr[4], attr[5]));
-                captionText.setText(attr[1]);
-            }
+            timeStamp.setText(formatDateTime);
+            coordinates.setText(locationFormat(attr[4], attr[5]));
+            captionText.setText(attr[1]);
         }
     }
 
+    //
+    // Add city name to location tag before the coordinates.
+    // If cannot get city, return only coordinates.
+    //
     public String locationFormat (String lat, String lon) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
@@ -301,7 +295,6 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
             e.printStackTrace();
             return lat + ", " + lon;
         }
-
     }
 
     //
@@ -333,9 +326,8 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
                 String brLat = data.getStringExtra("BTMRIGHTLATITUDE");
                 String brLon = data.getStringExtra("BTMRIGHTLONGITUDE");
                 String keywords = data.getStringExtra("KEYWORDS");
-                //--------------------------------------------------------------
                 String shape = locationFilter(tlLat, tlLon, brLat, brLon);
-                //--------------------------------------------------------------
+
                 if (shape.equals("invalid")){
                     gallery.setGallery(getPhotoPathsFromDir(startTimestamp, endTimestamp, keywords, "", "","", "",""), gallery.getGalleryPointer());
                     Toast.makeText(com.example.sprintone.gallery.GalleryActivity.this, "Invalid Coordinates", Toast.LENGTH_SHORT).show();
@@ -355,6 +347,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
         }
         //
         //adding a photo to gallery/db
+        //
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && captured_image_path != null) {
             presenter.addPhoto(gallery, captured_image_path);
 
@@ -382,6 +375,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
         File[] files = directory.listFiles();
         ArrayList<String> paths = new ArrayList<>();
 
+        //Use a lambda expression to sort the images by last modified date
         if (files != null && files.length > 1) {
             Arrays.sort(files, (o1, o2) -> {
                 long lastModifiedO1 = o1.lastModified();
@@ -430,11 +424,12 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
     //Based on different cases, assign different values to shape(a point, line, or surface).
     //
     public String locationFilter(String x1, String y1, String x2, String y2) {
-        ArrayList<String> coordinates = new ArrayList<>(Arrays.asList(x1, y1, x2, y2));
+        //Use lambda expression with Stream API to count the empty strings.
+        List<String> coordinates = Arrays.asList(x1, y1, x2, y2);
+        int count = toIntExact(coordinates.stream().filter(String::isEmpty).count());
         String shape = "invalid";
-        int counter = (int) coordinates.stream().filter(String::isEmpty).count();
-        Log.d("Counter", String.valueOf(counter));
-        switch (counter) {
+        Log.d("Count", String.valueOf(count));
+        switch (count) {
             case 4:
                 shape = "none";
                 break;
@@ -520,7 +515,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
     }
 
 
-    //deletes an image
+    // Deletes an image
     public void deletePhoto(View view) {
         if (presenter.deletePhoto(gallery) > -1)
         {
