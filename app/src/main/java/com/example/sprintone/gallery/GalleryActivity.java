@@ -375,7 +375,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
         File[] files = directory.listFiles();
         ArrayList<String> paths = new ArrayList<>();
 
-        //Use a lambda expression to sort the images by last modified date
+        //Use a lambda expression to sort the image files by last modified date
         if (files != null && files.length > 1) {
             Arrays.sort(files, (o1, o2) -> {
                 long lastModifiedO1 = o1.lastModified();
@@ -426,7 +426,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
     public String locationFilter(String x1, String y1, String x2, String y2) {
         //Use lambda expression with Stream API to count the empty strings.
         List<String> coordinates = Arrays.asList(x1, y1, x2, y2);
-        int count = toIntExact(coordinates.stream().filter(String::isEmpty).count());
+        int count = toIntExact(coordinates.stream().filter(String -> String.isEmpty()).count());
         String shape = "invalid";
         Log.d("Count", String.valueOf(count));
         switch (count) {
