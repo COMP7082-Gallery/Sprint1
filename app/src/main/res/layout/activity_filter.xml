@@ -18,13 +18,15 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="START_DATE"
+            android:text="Start Date"
             android:textSize="18sp" />
 
         <EditText
             android:id="@+id/filter_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="false"
             android:layout_weight="2"
             android:ems="10"
             android:inputType="date" />
@@ -46,7 +48,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="END_DATE"
+            android:text="End Date"
             android:textSize="18sp" />
 
 
@@ -54,6 +56,8 @@
             android:id="@+id/filter_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="false"
             android:layout_weight="2"
             android:ems="10"
             android:inputType="date" />
@@ -114,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="numberDecimal" />
+                android:inputType="numberSigned" />
 
             <EditText
                 android:id="@+id/tlLon"
@@ -122,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="numberDecimal" />
+                android:inputType="numberSigned" />
         </TableRow>
 
         <TableRow
@@ -143,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="numberDecimal" />
+                android:inputType="numberSigned" />
 
             <EditText
                 android:id="@+id/brLon"
@@ -151,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="numberDecimal" />
+                android:inputType="numberSigned" />
         </TableRow>
 
     </TableLayout>
@@ -169,7 +173,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="KEYWORD"
+            android:text="Keyword"
             android:textSize="18sp" />
 
 

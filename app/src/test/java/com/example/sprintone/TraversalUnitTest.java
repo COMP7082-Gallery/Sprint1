@@ -1,6 +1,7 @@
 package com.example.sprintone;
 
-import com.example.sprintone.Navigation.GalleryTraversal;
+import com.example.sprintone.traversal.GallerySingleton;
+//import com.example.sprintone.Navigation.GalleryTraversal;
 
 import org.junit.Test;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class TraversalUnitTest {
 
@@ -20,75 +22,146 @@ public class TraversalUnitTest {
 
     @Test
     public void prev_button_at_end() {
-        GalleryTraversal gt = new GalleryTraversal(paths);
+        GallerySingleton gallery = GallerySingleton.getInstance();
         int end = paths.size() - 1;
-        gt.traverseGallery(gt.getPhotoPointer() - 1);
-        assertEquals(end - 1, gt.getPhotoPointer());
+        gallery.setGallery(paths, end);
+
+        gallery.traverseGallery(gallery.getGalleryPointer() - 1);
+        assertEquals(end - 1, gallery.getGalleryPointer());
     }
 
     @Test
     public void prev_button_at_start() {
-        GalleryTraversal gt = new GalleryTraversal(paths);
+        GallerySingleton gallery = GallerySingleton.getInstance();
         int start = 0;
-        //set pointer to start
-        gt.traverseGallery(start);
-        gt.traverseGallery(gt.getPhotoPointer() - 1);
-        assertEquals(start, gt.getPhotoPointer());
+        gallery.setGallery(paths, start);
+
+        gallery.traverseGallery(gallery.getGalleryPointer() - 1);
+        assertEquals(start, gallery.getGalleryPointer());
     }
 
     @Test
     public void next_button_at_end() {
-        GalleryTraversal gt = new GalleryTraversal(paths);
+        GallerySingleton gallery = GallerySingleton.getInstance();
         int end = paths.size() - 1;
-        gt.traverseGallery(gt.getPhotoPointer() + 1);
-        assertEquals(end, gt.getPhotoPointer());
+        gallery.setGallery(paths, end);
+
+        gallery.traverseGallery(gallery.getGalleryPointer() + 1);
+        assertEquals(end, gallery.getGalleryPointer());
     }
 
     @Test
     public void next_button_at_start() {
-        GalleryTraversal gt = new GalleryTraversal(paths);
+        GallerySingleton gallery = GallerySingleton.getInstance();
         int start = 0;
-        //set pointer to start
-        gt.traverseGallery(start);
-        gt.traverseGallery(gt.getPhotoPointer() + 1);
-        assertEquals(start + 1, gt.getPhotoPointer());
+        gallery.setGallery(paths, start);
+
+        gallery.traverseGallery(gallery.getGalleryPointer() + 1);
+        assertEquals(start + 1, gallery.getGalleryPointer());
     }
-
-
 
     @Test
     public void prev_button_at_end_path() {
-        GalleryTraversal gt = new GalleryTraversal(paths);
+        GallerySingleton gallery = GallerySingleton.getInstance();
         int end = paths.size() - 1;
-        gt.traverseGallery(gt.getPhotoPointer() - 1);
-        assertEquals(paths.get(end - 1), gt.getCurrentPhotoPath());
+        gallery.setGallery(paths, end);
+
+        gallery.traverseGallery(gallery.getGalleryPointer() - 1);
+        assertEquals(paths.get(end - 1), gallery.getPhotoPath());
     }
 
     @Test
     public void prev_button_at_start_path() {
-        GalleryTraversal gt = new GalleryTraversal(paths);
+        GallerySingleton gallery = GallerySingleton.getInstance();
         int start = 0;
-        //set pointer to start
-        gt.traverseGallery(start);
-        gt.traverseGallery(gt.getPhotoPointer() - 1);
-        assertEquals(paths.get(start), gt.getCurrentPhotoPath());
+        gallery.setGallery(paths, start);
+
+        gallery.traverseGallery(gallery.getGalleryPointer() - 1);
+        assertEquals(paths.get(start), gallery.getPhotoPath());
     }
 
     @Test
     public void next_button_at_end_path() {
-        GalleryTraversal gt = new GalleryTraversal(paths);
+        GallerySingleton gallery = GallerySingleton.getInstance();
         int end = paths.size() - 1;
-        gt.traverseGallery(gt.getPhotoPointer() + 1);
-        assertEquals(paths.get(end), gt.getCurrentPhotoPath());
+        gallery.setGallery(paths, end);
+
+        gallery.traverseGallery(gallery.getGalleryPointer() + 1);
+        assertEquals(paths.get(end), gallery.getPhotoPath());
     }
 
     @Test
     public void next_button_at_start_path() {
-        GalleryTraversal gt = new GalleryTraversal(paths);
+        GallerySingleton gallery = GallerySingleton.getInstance();
         int start = 0;
-        //set pointer to start
-        gt.traverseGallery(start);
-        gt.traverseGallery(gt.getPhotoPointer() + 1);
-        assertEquals(paths.get(start + 1), gt.getCurrentPhotoPath());
+        gallery.setGallery(paths, start);
+
+        gallery.traverseGallery(gallery.getGalleryPointer() + 1);
+        assertEquals(paths.get(start + 1), gallery.getPhotoPath());
+    }
+
+
+    //test delete
+    @Test
+    public void delete_last() {
+        System.out.println("Delete Last Element");
+        GallerySingleton gallery = GallerySingleton.getInstance();
+        ArrayList<String> old_list = new ArrayList<String>(paths);
+        int end = paths.size() - 1;
+        int size_before = paths.size();
+        gallery.setGallery(paths, end);
+
+        gallery.removeFromGallery();
+        assertEquals(size_before - 1, gallery.getPhotoPaths().size());
+
+        //assert that the removed item is no longer in the list
+        //print out all members of the updated gallery
+        for (int i = 0; i < gallery.getPhotoPaths().size(); i++)
+        {
+            System.out.println(old_list.get(end) + " != " + gallery.getPhotoPaths().get(i));
+            assertNotEquals(old_list.get(end), gallery.getPhotoPaths().get(i));
+        }
+    }
+
+    @Test
+    public void delete_first() {
+        System.out.println("Delete First Element");
+        GallerySingleton gallery = GallerySingleton.getInstance();
+        ArrayList<String> old_list = new ArrayList<String>(paths);
+        int start = 0;
+        int size_before = paths.size();
+        gallery.setGallery(paths, start);
+
+        gallery.removeFromGallery();
+        assertEquals(size_before - 1, gallery.getPhotoPaths().size());
+
+        //assert that the removed item is no longer in the list
+        //print out all members of the updated gallery
+        for (int i = 0; i < gallery.getPhotoPaths().size(); i++)
+        {
+            System.out.println(old_list.get(start) + " != " + gallery.getPhotoPaths().get(i));
+            assertNotEquals(old_list.get(start), gallery.getPhotoPaths().get(i));
+        }
+    }
+
+    @Test
+    public void delete_middle() {
+        System.out.println("Delete Middle Element");
+        GallerySingleton gallery = GallerySingleton.getInstance();
+        ArrayList<String> old_list = new ArrayList<String>(paths);
+        int middle = paths.size() / 2;
+        int size_before = paths.size();
+        gallery.setGallery(paths, middle);
+
+        gallery.removeFromGallery();
+        assertEquals(size_before - 1, gallery.getPhotoPaths().size());
+
+        //assert that the removed item is no longer in the list
+        //print out all members of the updated gallery
+        for (int i = 0; i < gallery.getPhotoPaths().size(); i++)
+        {
+            System.out.println(old_list.get(middle) + " != " + gallery.getPhotoPaths().get(i));
+            assertNotEquals(old_list.get(middle), gallery.getPhotoPaths().get(i));
+        }
     }
 }

@@ -894,6 +894,7 @@ id bottom_right
 id bounce
 id brLat
 id brLon
+id button2
 id buttonPanel
 id camera_btn
 id cancel_filter_btn
@@ -1026,6 +1027,7 @@ id search_plate
 id search_src_text
 id search_voice_btn
 id select_dialog_listview
+id share_btn
 id shortcut
 id showCustom
 id showHome
@@ -1088,6 +1090,7 @@ integer abc_config_activityDefaultDur
 integer abc_config_activityShortDur
 integer cancel_button_image_alpha
 integer config_tooltipAnimTime
+integer google_play_services_version
 integer status_bar_notification_info_maxnum
 interpolator btn_checkbox_checked_mtrl_animation_interpolator_0
 interpolator btn_checkbox_checked_mtrl_animation_interpolator_1
@@ -1167,7 +1170,17 @@ string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
 string app_name
+string common_google_play_services_unknown_issue
+string default_web_client_id
+string firebase_database_url
+string gcm_defaultSenderId
+string google_api_key
+string google_app_id
+string google_crash_reporting_api_key
+string google_storage_bucket
+string project_id
 string search_menu_title
+string send_to
 string status_bar_notification_info_overflow
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
