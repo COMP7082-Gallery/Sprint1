@@ -1,3 +1,4 @@
+/*
 package com.example.sprintone.data.model;
 
 
@@ -11,25 +12,26 @@ public class Picture  {
     String date;
     String caption;
 
-    public void getid();
-    public void setid();
+    public void getid(){}
+    public void setid(){}
 
-    public void getpath();
-    public void setpath();
+    public void getpath(){}
+    public void setpath(){}
 
-    public void getlat();
-    public void setlat();
+    public void getlat(){}
+    public void setlat(){}
 
-    public void getlon();
-    public void setlon();
+    public void getlon(){}
+    public void setlon(){}
 
-    public void getdate();
-    public void setdate();
+    public void getdate(){}
+    public void setdate(){}
 
-    public void getcaption();
-    public void setcaption();
+    public void getcaption(){}
+    public void setcaption(){}
+
+    }
 
 
 
-
-}
+*/
