@@ -34,6 +34,7 @@ public class FilterGalleryActivity extends AppCompatActivity {
     private final Calendar myCalendar = Calendar.getInstance();
 
     @Override
+    @BasicTrace("onCreate")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);

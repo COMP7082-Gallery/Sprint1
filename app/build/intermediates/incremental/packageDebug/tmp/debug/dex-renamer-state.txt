@@ -1,7 +1,7 @@
-#Thu Oct 15 15:07:57 PDT 2020
-base.0=C\:\\Users\\sam_t\\AndroidStudioProjects\\Sprint1\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+#Thu Oct 22 04:26:59 PDT 2020
+base.0=C\:\\Users\\soukc\\Desktop\\Btech\\SOFTENG_7082\\photogallery\\Sprint3\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 path.1=classes.dex
 renamed.1=classes2.dex
 path.0=classes.dex
 renamed.0=classes.dex
-base.1=C\:\\Users\\sam_t\\AndroidStudioProjects\\Sprint1\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\classes.dex
+base.1=C\:\\Users\\soukc\\Desktop\\Btech\\SOFTENG_7082\\photogallery\\Sprint3\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\classes.dex

@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.sprintone.facade.Actions;
 import com.example.sprintone.filter_gallery.FilterGalleryActivity;
 import com.example.sprintone.R;
 import com.example.sprintone.traversal.GallerySingleton;
@@ -48,7 +49,7 @@ import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
 import static java.lang.Math.toIntExact;
 
-public class GalleryActivity extends AppCompatActivity implements GalleryActivityMVP.View {
+public class GalleryActivity extends AppCompatActivity implements GalleryActivityMVP.View, Actions {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int FILTER_ACTIVITY_REQUEST_CODE = 2;
@@ -62,9 +63,12 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
     private EditText editCaption;
     private TextView captionText;
     private LinearLayout captionArea;
+    private Photographer photographer = new Photographer();
 
     private GallerySingleton gallery = GallerySingleton.getInstance();
     private GalleryActivityPresenter presenter;
+
+    GalleryActivity that = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,23 +163,11 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
         captionArea.setVisibility(View.GONE);
     }
 
-    /* Edit caption for existing photo */
-    public void editCaption(View view){
-        editCaption.setText(captionText.getText().toString());
-        captionText.setVisibility(View.GONE);
-        captionArea.setVisibility(View.VISIBLE);
-    }
 
 
     //PRESENTER
     //BC DATABASE
-    public void saveCaption(View view) {
-        captionText.setText(editCaption.getText().toString());
-        presenter.saveCaption(gallery, editCaption.getText().toString());
 
-        hideEditCaption(captionArea);
-        captionText.setVisibility(View.VISIBLE);
-    }
 
     //
     // Update current photo
@@ -198,27 +190,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
     //Handler for the camera function of the app
     //Delegates to the android camera app
     //
-    public void dispatchTakePictureIntent(View view) {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            File imageFile = null;
-            try {
-                imageFile = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (imageFile != null) {
-                Uri imageUri = FileProvider.getUriForFile(this, "com.example.sprintone.android.fileprovider", imageFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                captured_image_path = imageFile.getAbsolutePath();
-                Log.e("imageFile", imageFile.getAbsolutePath());
-                //setExif(imageUri);
-            }
-        }
-    }
 
     //
     //Creates a temporary file for the new image
@@ -484,65 +456,128 @@ public class GalleryActivity extends AppCompatActivity implements GalleryActivit
         return shape;
     }
 
-    //
-    //Allows users to traverse through their gallery of images
-    //The photoPointer is updated to the index of the
-    //
+    @Override
+    public void saveCaption(View view) {
+        photographer.saveCaption(view);
+    }
+
+    @Override
+    public void dispatchTakePictureIntent(View view) {
+        photographer.dispatchTakePictureIntent(view);
+    }
+
+
+    @Override
     public void traverseGallery(View view) {
-        if (view.getId() == R.id.prev_btn) {
-            hideEditCaption(captionArea);
-            captionText.setVisibility(View.VISIBLE);
-            if (gallery.getGalleryPointer() > 0) {
-                updateCurrentPhoto(gallery.getGalleryPointer() - 1);
-            }
-            else {
-                Toast.makeText(com.example.sprintone.gallery.GalleryActivity.this, "First image",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-        else if (view.getId() == R.id.next_btn) {
-            hideEditCaption(captionArea);
-            captionText.setVisibility(View.VISIBLE);
-            if (gallery.getGalleryPointer() < gallery.getPhotoPaths().size() - 1) {
-                updateCurrentPhoto(gallery.getGalleryPointer() + 1);
-
-            }
-            else {
-                Toast.makeText(com.example.sprintone.gallery.GalleryActivity.this, "Last image",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
+        photographer.traverseGallery(view);
     }
 
-
-    // Deletes an image
+    @Override
     public void deletePhoto(View view) {
-        if (presenter.deletePhoto(gallery) > -1)
-        {
-            updateCurrentPhoto(gallery.getGalleryPointer());
-        }
-        else
-        {
-            Log.d("d", "There was a problem deleting the image");
-        }
+        photographer.deletePhoto(view);
     }
 
-    public void sharePhoto (View view)
-    {
-        Intent send  = new Intent();
-        File file    = new File (gallery.getPhotoPath());
-        Uri imageUri = FileProvider.getUriForFile(this, "com.example.sprintone.android.fileprovider", file);
+    @Override
+    public void sharePhoto(View view) {
+        photographer.sharePhoto(view);
+    }
 
-        send.setAction(Intent.ACTION_SEND);
-        send.putExtra(Intent.EXTRA_TITLE, "COMP 7082");
-        send.putExtra(Intent.EXTRA_SUBJECT, "Picture to Send");
-        send.putExtra(Intent.EXTRA_STREAM, imageUri);
-        send.setType("image/*");
+    @Override
+    public void editCaption(View view) {
+        photographer.editCaption(view);
+    }
 
-        if (file != null) Log.d ( "Pass", "File Exists" );
-        else Log.d ("File Error", "File does not exist");
+    public class Photographer implements Actions {
+        public void editCaption(View view){
+            editCaption.setText(captionText.getText().toString());
+            captionText.setVisibility(View.GONE);
+            captionArea.setVisibility(View.VISIBLE);
+        }
 
-        startActivity(Intent.createChooser(send, null));
+        public void sharePhoto (View view)
+        {
+            Intent send  = new Intent();
+            File file    = new File (gallery.getPhotoPath());
+            Uri imageUri = FileProvider.getUriForFile(that, "com.example.sprintone.android.fileprovider", file);
+
+            send.setAction(Intent.ACTION_SEND);
+            send.putExtra(Intent.EXTRA_TITLE, "COMP 7082");
+            send.putExtra(Intent.EXTRA_SUBJECT, "Picture to Send");
+            send.putExtra(Intent.EXTRA_STREAM, imageUri);
+            send.setType("image/*");
+
+            if (file != null) Log.d ( "Pass", "File Exists" );
+            else Log.d ("File Error", "File does not exist");
+
+            startActivity(Intent.createChooser(send, null));
+        }
+
+        public void deletePhoto(View view) {
+            if (presenter.deletePhoto(gallery) > -1)
+            {
+                updateCurrentPhoto(gallery.getGalleryPointer());
+            }
+            else
+            {
+                Log.d("d", "There was a problem deleting the image");
+            }
+        }
+
+        public void saveCaption(View view) {
+            captionText.setText(editCaption.getText().toString());
+            presenter.saveCaption(gallery, editCaption.getText().toString());
+
+            hideEditCaption(captionArea);
+            captionText.setVisibility(View.VISIBLE);
+        }
+
+        public void traverseGallery(View view) {
+            if (view.getId() == R.id.prev_btn) {
+                hideEditCaption(captionArea);
+                captionText.setVisibility(View.VISIBLE);
+                if (gallery.getGalleryPointer() > 0) {
+                    updateCurrentPhoto(gallery.getGalleryPointer() - 1);
+                }
+                else {
+                    Toast.makeText(com.example.sprintone.gallery.GalleryActivity.this, "First image",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+            else if (view.getId() == R.id.next_btn) {
+                hideEditCaption(captionArea);
+                captionText.setVisibility(View.VISIBLE);
+                if (gallery.getGalleryPointer() < gallery.getPhotoPaths().size() - 1) {
+                    updateCurrentPhoto(gallery.getGalleryPointer() + 1);
+
+                }
+                else {
+                    Toast.makeText(com.example.sprintone.gallery.GalleryActivity.this, "Last image",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        public void dispatchTakePictureIntent(View view) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+                File imageFile = null;
+                try {
+                    imageFile = createImageFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (imageFile != null) {
+                    Uri imageUri = FileProvider.getUriForFile(that, "com.example.sprintone.android.fileprovider", imageFile);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    captured_image_path = imageFile.getAbsolutePath();
+                    Log.e("imageFile", imageFile.getAbsolutePath());
+                    //setExif(imageUri);
+                }
+            }
+        }
     }
 }
 
