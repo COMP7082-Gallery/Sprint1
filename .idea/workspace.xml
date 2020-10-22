@@ -12,12 +12,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4521eabe-396b-48c0-9b4f-7df5b940adee" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/sprintone/data/model/Databse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="4521eabe-396b-48c0-9b4f-7df5b940adee" name="Default Changelist" comment="supposed database model">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/sprintone/data/model/Picture.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/sprintone/data/model/Picture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/sprintone/data/model/PictureModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/sprintone/data/model/Databse.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/sprintone/data/model/Databse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -375,7 +372,19 @@
       <option name="presentableId" value="Default" />
       <updated>1600200525270</updated>
     </task>
+    <task id="LOCAL-00001" summary="supposed database model">
+      <created>1603339671124</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1603339671124</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="supposed database model" />
+    <option name="LAST_COMMIT_MESSAGE" value="supposed database model" />
   </component>
   <component name="WindowStateProjectService">
     <state x="163" y="134" width="1624" height="800" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1600387863865">
@@ -399,10 +408,10 @@
     </state>
     <state x="350" y="168" key="AndroidCreateResourceFileDialog/0.0.1536.824@0.0.1536.824" timestamp="1600200668724" />
     <state x="438" y="212" key="AndroidCreateResourceFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600701896305" />
-    <state x="192" y="62" key="CommitChangelistDialog2" timestamp="1602148292073">
+    <state x="342" y="64" key="CommitChangelistDialog2" timestamp="1603339720338">
       <screen x="0" y="23" width="1440" height="836" />
     </state>
-    <state x="192" y="62" key="CommitChangelistDialog2/0.23.1440.836@0.23.1440.836" timestamp="1602148292073" />
+    <state x="342" y="64" key="CommitChangelistDialog2/0.23.1440.836@0.23.1440.836" timestamp="1603339720338" />
     <state x="688" y="177" key="FileChooserDialogImpl" timestamp="1600703564944">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -436,6 +445,10 @@
     <state width="1877" height="281" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602799677538" />
     <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600727903007" />
     <state width="1182" height="203" key="GridCell.Tab.0.right/0.23.1440.836@0.23.1440.836" timestamp="1602148277878" />
+    <state x="258" y="200" key="Vcs.Push.Dialog.v2" timestamp="1603339732837">
+      <screen x="0" y="23" width="1440" height="836" />
+    </state>
+    <state x="258" y="200" key="Vcs.Push.Dialog.v2/0.23.1440.836@0.23.1440.836" timestamp="1603339732837" />
     <state x="94" y="94" width="1349" height="637" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1600376115090">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
