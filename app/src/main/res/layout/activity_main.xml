@@ -16,7 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_baseline_image_24" />
+        android:src="@drawable/ic_baseline_image_24"
+        android:contentDescription="@string/desc"
+        />
 
     <TextView
         android:id="@+id/dateTime"
@@ -47,11 +49,13 @@
 
         <EditText
             android:id="@+id/editCaptionView"
+            android:labelFor="@+id/editCaptionView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:autofillHints="Description of Photo"/>
 
         <Button
             android:id="@+id/save_btn"
@@ -76,7 +80,8 @@
             android:layout_alignParentStart="true"
             android:layout_weight="1"
             android:onClick="traverseGallery"
-            android:text="Prev" />
+            android:text="Prev"
+            style="?android:attr/buttonBarButtonStyle"/>
 
         <Button
             android:id="@+id/camera_btn"
@@ -84,7 +89,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="dispatchTakePictureIntent"
-            android:text="Camera" />
+            android:text="Camera"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/next_btn"
@@ -93,7 +99,8 @@
             android:layout_centerInParent="true"
             android:layout_weight="1"
             android:onClick="traverseGallery"
-            android:text="next" />
+            android:text="next"
+            style="?android:attr/buttonBarButtonStyle" />
 
     </LinearLayout>
 
@@ -117,7 +124,8 @@
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:onClick="deletePhoto"
-            android:text="Delete" />
+            android:text="Delete"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/edit_caption_btn"
@@ -126,7 +134,8 @@
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:onClick="editCaption"
-            android:text="Edit Caption" />
+            android:text="Edit Caption"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/share_btn"
@@ -135,7 +144,8 @@
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:onClick="sharePhoto"
-            android:text="Share" />
+            android:text="Share"
+            style="?android:attr/buttonBarButtonStyle" />
     </LinearLayout>
 
 </LinearLayout>

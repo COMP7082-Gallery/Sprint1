@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">sprintone</string>
     <string name="send_to">Send to</string>
+    <string name="desc">Displays pictures in file</string>
 </resources>
